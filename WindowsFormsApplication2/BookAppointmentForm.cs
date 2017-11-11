@@ -1,0 +1,42 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace WindowsFormsApplication2
+{
+    public partial class BookAppointmentForm : Form
+    {
+        public BookAppointmentForm()
+        {
+            InitializeComponent();
+        }
+
+        private void OnLoad(object sender, EventArgs e)
+        {
+            this.timePicker.ShowUpDown = true;
+            this.timePicker.CustomFormat = "hh/mm";
+            this.timePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+
+            this.datePicker.ShowUpDown = true;
+            this.datePicker.CustomFormat = "dd/MM/yyyy";
+            this.datePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+
+            if(UIManager.Instance.ActivePatient != null)
+            {
+                this.patientNameTxtbox.Text = UIManager.Instance.ActivePatient.PatientName;
+            }
+        }
+
+        private void findPatient_Click(object sender, EventArgs e)
+        {
+            UIManager.Instance.showFindPatientForm();
+            this.patientNameTxtbox.Text = UIManager.Instance.ActivePatient.PatientName;
+        }
+    }
+}
