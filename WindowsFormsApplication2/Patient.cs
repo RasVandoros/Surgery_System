@@ -11,7 +11,7 @@ namespace WindowsFormsApplication2
     {
         private string patientID;
         private string patientName;
-        private string patientDateOfBirth;
+        private string patientDateOfBirth; 
         private string patientAddress;
 
         public string PatientId
