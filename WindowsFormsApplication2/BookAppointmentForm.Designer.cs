@@ -32,14 +32,13 @@
             this.staffMember = new System.Windows.Forms.Label();
             this.date = new System.Windows.Forms.Label();
             this.patientNameTxtbox = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
             this.datePicker = new System.Windows.Forms.DateTimePicker();
             this.time = new System.Windows.Forms.Label();
             this.timePicker = new System.Windows.Forms.DateTimePicker();
             this.chooseTime = new System.Windows.Forms.Button();
             this.submitButton = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.findPatient = new System.Windows.Forms.Button();
+            this.stffNameComboBox = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // patientNameLabel
@@ -77,18 +76,12 @@
             this.patientNameTxtbox.Size = new System.Drawing.Size(151, 20);
             this.patientNameTxtbox.TabIndex = 4;
             // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(191, 145);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(151, 20);
-            this.textBox2.TabIndex = 5;
-            // 
             // datePicker
             // 
+            this.datePicker.Checked = false;
             this.datePicker.Location = new System.Drawing.Point(191, 205);
             this.datePicker.Name = "datePicker";
+            this.datePicker.ShowCheckBox = true;
             this.datePicker.Size = new System.Drawing.Size(151, 20);
             this.datePicker.TabIndex = 8;
             // 
@@ -103,8 +96,10 @@
             // 
             // timePicker
             // 
+            this.timePicker.Checked = false;
             this.timePicker.Location = new System.Drawing.Point(191, 265);
             this.timePicker.Name = "timePicker";
+            this.timePicker.ShowCheckBox = true;
             this.timePicker.Size = new System.Drawing.Size(151, 20);
             this.timePicker.TabIndex = 9;
             // 
@@ -116,6 +111,7 @@
             this.chooseTime.TabIndex = 10;
             this.chooseTime.Text = "Choose";
             this.chooseTime.UseVisualStyleBackColor = true;
+            this.chooseTime.Click += new System.EventHandler(this.chooseTime_Click);
             // 
             // submitButton
             // 
@@ -127,15 +123,6 @@
             this.submitButton.Text = "Submit";
             this.submitButton.UseVisualStyleBackColor = true;
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(291, 171);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(51, 23);
-            this.button1.TabIndex = 12;
-            this.button1.Text = "Choose";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
             // findPatient
             // 
             this.findPatient.Location = new System.Drawing.Point(291, 108);
@@ -146,18 +133,27 @@
             this.findPatient.UseVisualStyleBackColor = true;
             this.findPatient.Click += new System.EventHandler(this.findPatient_Click);
             // 
+            // stffNameComboBox
+            // 
+            this.stffNameComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.stffNameComboBox.FormattingEnabled = true;
+            this.stffNameComboBox.Location = new System.Drawing.Point(191, 152);
+            this.stffNameComboBox.Name = "stffNameComboBox";
+            this.stffNameComboBox.Size = new System.Drawing.Size(151, 21);
+            this.stffNameComboBox.TabIndex = 14;
+            this.stffNameComboBox.Click += new System.EventHandler(this.OnComboBoxClick);
+            // 
             // BookAppointmentForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(378, 403);
+            this.Controls.Add(this.stffNameComboBox);
             this.Controls.Add(this.findPatient);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.submitButton);
             this.Controls.Add(this.chooseTime);
             this.Controls.Add(this.timePicker);
             this.Controls.Add(this.datePicker);
-            this.Controls.Add(this.textBox2);
             this.Controls.Add(this.patientNameTxtbox);
             this.Controls.Add(this.time);
             this.Controls.Add(this.date);
@@ -177,13 +173,12 @@
         private System.Windows.Forms.Label staffMember;
         private System.Windows.Forms.Label date;
         private System.Windows.Forms.TextBox patientNameTxtbox;
-        private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.DateTimePicker datePicker;
         private System.Windows.Forms.Label time;
         private System.Windows.Forms.DateTimePicker timePicker;
         private System.Windows.Forms.Button chooseTime;
         private System.Windows.Forms.Button submitButton;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button findPatient;
+        private System.Windows.Forms.ComboBox stffNameComboBox;
     }
 }

@@ -55,6 +55,8 @@ namespace WindowsFormsApplication2
             set { chosenAppointment = value; }
         }
 
+        
+
         public User ActiveUser
         {
             get { return activeUser; }
@@ -135,6 +137,32 @@ namespace WindowsFormsApplication2
 
             
 
+        }
+
+        internal void FillStaffMembersComboBox()
+        {
+            if (bookAppointmentForm.DatePicker.Checked) 
+            {
+                if (bookAppointmentForm.TimePicker.Checked) //both checked
+                {
+
+                }
+                else //only date checked
+                {
+
+                }
+            }
+            else
+            {
+                if (bookAppointmentForm.TimePicker.Checked) //only time checked
+                {
+
+                }
+                else //none checked
+                {
+
+                }
+            }
         }
 
 
