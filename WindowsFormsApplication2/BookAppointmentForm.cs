@@ -87,7 +87,10 @@ namespace WindowsFormsApplication2
 
         private void OnComboBoxClick(object sender, EventArgs e)
         {
-            UIManager.Instance.FillStaffMembersComboBox();
+            string selectedDate = UIManager.Instance.BookAppointmentForm.DatePicker.Value.ToString("yyyy_MM_dd");
+            string selectedTime = UIManager.Instance.BookAppointmentForm.TimePicker.Value.ToString("hh_mm");
+
+            UIManager.Instance.FillStaffMembersComboBox(selectedDate, selectedTime);
             
         }
 

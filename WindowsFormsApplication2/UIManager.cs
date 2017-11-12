@@ -133,7 +133,7 @@ namespace WindowsFormsApplication2
         }
 
         
-        internal void FillStaffMembersComboBox()
+        internal void FillStaffMembersComboBox(string selectedDate, string selectedTIme)
         {
             BookAppointmentForm.StffComboBox.Items.Clear();
             
@@ -141,15 +141,15 @@ namespace WindowsFormsApplication2
             {
                 if (bookAppointmentForm.TimePicker.Checked) //both checked
                 {
-                    string selectedDate = BookAppointmentForm.DatePicker.Value.ToString("yyyy/MM/dd");
-                    string selectedTime = BookAppointmentForm.TimePicker.Value.ToString("hhmm");
-
-                    //NEEDS FIX
-                    string sql = @"SELECT StaffID FROM Shifts WHERE Date = '" + selectedDate + "' AND StartTime <  '" + selectedTime + "' AND FinishTime > '" + selectedTime + "' EXCEPT SELECT StaffID FROM Appointments WHERE AppointmentDate = '" + selectedDate + "'AND AppointmentTime = '" + selectedTime + "'";
+                                        
+                    //The sql grabs all the StaffIds from the Shifts table that have a starting time earlier than the selected time, finish time later than the selected time
+                    //and selected date equal to the selected date
+                    //And then excludes from them, those IDs that have an appointment already booked for the selected date AND time
+                    string sql = @"SELECT StaffID FROM Shifts WHERE Date = '" + selectedDate + "' AND StartTime <=  '" + selectedTIme + "' AND FinishTime >= '" + selectedTIme + "' EXCEPT SELECT StaffID FROM Appointments WHERE AppointmentDate = '" + selectedDate + "'AND AppointmentTime = '" + selectedTIme + "'";
 
                     
                     DataSet ds = DBManager.getDBConnectionInstance().getDataSet(sql);
-                    List<string> myListOfIds = new List<string>();
+
                     foreach (DataRow row in ds.Tables[0].Rows)
                     {
                         foreach (object id in row.ItemArray)
@@ -161,18 +161,51 @@ namespace WindowsFormsApplication2
                 }
                 else //only date checked
                 {
+                    //This statement grabs all StaffIds that are on duty during selected date
+                    string sql = @"SELECT StaffID FROM Shifts WHERE Date = '" + selectedDate + "'";
 
+                    DataSet ds = DBManager.getDBConnectionInstance().getDataSet(sql);
+
+                    foreach (DataRow row in ds.Tables[0].Rows)
+                    {
+                        foreach (object id in row.ItemArray)
+                        {
+                            BookAppointmentForm.StffComboBox.Items.Add(id.ToString());
+                        }
+                    }
                 }
             }
             else
             {
                 if (bookAppointmentForm.TimePicker.Checked) //only time checked
                 {
+                    string sql = @"SELECT StaffID FROM Shifts WHERE StartTime <=  '" + selectedTIme + "' AND FinishTime >= '" + selectedTIme + "'";
 
+
+                    DataSet ds = DBManager.getDBConnectionInstance().getDataSet(sql);
+
+                    foreach (DataRow row in ds.Tables[0].Rows)
+                    {
+                        foreach (object id in row.ItemArray)
+                        {
+                            BookAppointmentForm.StffComboBox.Items.Add(id.ToString());
+                        }
+                    }
                 }
                 else //none checked
                 {
+                    string sql = @"SELECT DISTINCT StaffID FROM Shifts";
 
+
+                    DataSet ds = DBManager.getDBConnectionInstance().getDataSet(sql);
+
+                    foreach (DataRow row in ds.Tables[0].Rows)
+                    {
+                        foreach (object id in row.ItemArray)
+                        {
+                            BookAppointmentForm.StffComboBox.Items.Add(id.ToString());
+                        }
+                    }
                 }
             }
             

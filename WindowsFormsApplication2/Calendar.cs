@@ -47,7 +47,7 @@ namespace WindowsFormsApplication2
 
         private void OnDateSelected(object sender, DateRangeEventArgs e)
         {
-            myGrid.DataSource = UIManager.Instance.ProjectSelectedDateToCalendar(myCalendar.SelectionRange.Start.ToString("yyyy/MM/dd").Replace('/', '_')).Tables[0];
+            myGrid.DataSource = UIManager.Instance.ProjectSelectedDateToCalendar(myCalendar.SelectionRange.Start.ToString("yyyy_MM_dd")).Tables[0];
         }
 
         private void myGrid_CellClick(object sender, DataGridViewCellEventArgs e)
