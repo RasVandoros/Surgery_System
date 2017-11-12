@@ -143,6 +143,7 @@
             this.stffNameComboBox.Name = "stffNameComboBox";
             this.stffNameComboBox.Size = new System.Drawing.Size(151, 21);
             this.stffNameComboBox.TabIndex = 14;
+            this.stffNameComboBox.SelectionChangeCommitted += new System.EventHandler(this.stffNameComboBox_SelectionChangeCommitted);
             this.stffNameComboBox.Click += new System.EventHandler(this.OnComboBoxClick);
             // 
             // BookAppointmentForm

@@ -405,14 +405,20 @@ namespace WindowsFormsApplication2
         
         internal bool ConfirmSearchPatientClick(string id)
         {
-            string sql = @"SELECT * FROM Patients WHERE Id = '" + id + "'";
-            DataSet ds = DBManager.getDBConnectionInstance().getDataSet(sql);
-            if (Utility.CheckFind(ds))
+            int myId;
+            if(Int32.TryParse(id, out myId))
             {
-                UIManager.Instance.activePatient = new Patient(ds);
-                return true;
+                string sql = @"SELECT * FROM Patients WHERE Id = '" + myId + "'";
+                DataSet ds = DBManager.getDBConnectionInstance().getDataSet(sql);
+                if (Utility.CheckFind(ds))
+                {
+                    UIManager.Instance.activePatient = new Patient(ds);
+                    return true;
+                }
+                else return false;
             }
             else return false;
+
         }
 
         public bool ClickLogIn(string userName, string password)
@@ -460,6 +466,14 @@ namespace WindowsFormsApplication2
             UIManager.Instance.MainForm.DoBLabelTxt = UIManager.Instance.ActivePatient.PatientDateOfBirth;
             UIManager.Instance.MainForm.IdLabelTxt = UIManager.Instance.ActivePatient.PatientId;
             
+        }
+
+        internal static void UpdateSubmitButton()
+        {
+            if (UIManager.Instance.ActivePatient != null)
+            {
+                UIManager.Instance.BookAppointmentForm.SubmitButton.Enabled = true;
+            }
         }
     }
 }

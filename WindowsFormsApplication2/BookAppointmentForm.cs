@@ -48,6 +48,17 @@ namespace WindowsFormsApplication2
             }
         }
 
+        public Button SubmitButton
+        {
+            get
+            {
+                return submitButton;
+            }
+            set
+            {
+                submitButton = value;
+            }
+        }
 
 
         public BookAppointmentForm()
@@ -68,6 +79,11 @@ namespace WindowsFormsApplication2
             if(UIManager.Instance.ActivePatient != null)
             {
                 this.patientNameTxtbox.Text = UIManager.Instance.ActivePatient.PatientName;
+
+            }
+            else
+            {
+                
             }
         }
 
@@ -77,6 +93,10 @@ namespace WindowsFormsApplication2
             if(UIManager.Instance.ActivePatient != null)
             {
                 this.patientNameTxtbox.Text = UIManager.Instance.ActivePatient.PatientName;
+            }
+            if (StffComboBox.SelectedItem != null)
+            {
+                submitButton.Enabled = true;
             }
         }
 
@@ -97,7 +117,14 @@ namespace WindowsFormsApplication2
         private void OnValueChanged(object sender, EventArgs e)
         {
             UIManager.Instance.BookAppointmentForm.StffComboBox.SelectedItem = null;
+            UIManager.Instance.BookAppointmentForm.submitButton.Enabled = false;
+
         }
 
+        private void stffNameComboBox_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            Utility.UpdateSubmitButton();
+            
+        }
     }
 }
