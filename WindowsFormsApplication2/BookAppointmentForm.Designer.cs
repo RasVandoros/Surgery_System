@@ -84,6 +84,7 @@
             this.datePicker.ShowCheckBox = true;
             this.datePicker.Size = new System.Drawing.Size(151, 20);
             this.datePicker.TabIndex = 8;
+            this.datePicker.ValueChanged += new System.EventHandler(this.OnValueChanged);
             // 
             // time
             // 
@@ -102,6 +103,7 @@
             this.timePicker.ShowCheckBox = true;
             this.timePicker.Size = new System.Drawing.Size(151, 20);
             this.timePicker.TabIndex = 9;
+            this.timePicker.ValueChanged += new System.EventHandler(this.OnValueChanged);
             // 
             // chooseTime
             // 

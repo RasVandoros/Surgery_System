@@ -62,7 +62,7 @@ namespace WindowsFormsApplication2
             this.timePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
 
             this.datePicker.ShowUpDown = true;
-            this.datePicker.CustomFormat = "dd/MM/yyyy";
+            this.datePicker.CustomFormat = "yyyy / MM / dd";
             this.datePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
 
             if(UIManager.Instance.ActivePatient != null)
@@ -74,7 +74,10 @@ namespace WindowsFormsApplication2
         private void findPatient_Click(object sender, EventArgs e)
         {
             UIManager.Instance.showFindPatientForm();
-            this.patientNameTxtbox.Text = UIManager.Instance.ActivePatient.PatientName;
+            if(UIManager.Instance.ActivePatient != null)
+            {
+                this.patientNameTxtbox.Text = UIManager.Instance.ActivePatient.PatientName;
+            }
         }
 
         private void chooseTime_Click(object sender, EventArgs e)
@@ -87,5 +90,11 @@ namespace WindowsFormsApplication2
             UIManager.Instance.FillStaffMembersComboBox();
             
         }
+
+        private void OnValueChanged(object sender, EventArgs e)
+        {
+            UIManager.Instance.BookAppointmentForm.StffComboBox.SelectedItem = null;
+        }
+
     }
 }

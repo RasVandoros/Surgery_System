@@ -41,13 +41,13 @@ namespace WindowsFormsApplication2
         {
             // TODO: This line of code loads data into the 'databaseDataSet1.Appointments' table. You can move, or remove it, as needed.
             this.appointmentsTableAdapter1.Fill(this.databaseDataSet1.Appointments);
-            myGrid.DataSource = UIManager.Instance.ProjectSelectedDateToCalendar(myCalendar.SelectionRange.Start.ToShortDateString().Replace('/', '_')).Tables[0];
+            myGrid.DataSource = UIManager.Instance.ProjectSelectedDateToCalendar(myCalendar.SelectionRange.Start.ToString("yyyy/MM/dd").Replace('/', '_')).Tables[0];
             myGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         }
 
         private void OnDateSelected(object sender, DateRangeEventArgs e)
         {
-            myGrid.DataSource = UIManager.Instance.ProjectSelectedDateToCalendar(myCalendar.SelectionRange.Start.ToShortDateString().Replace('/', '_')).Tables[0];
+            myGrid.DataSource = UIManager.Instance.ProjectSelectedDateToCalendar(myCalendar.SelectionRange.Start.ToString("yyyy/MM/dd").Replace('/', '_')).Tables[0];
         }
 
         private void myGrid_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -68,7 +68,7 @@ namespace WindowsFormsApplication2
         {
 
             UIManager.Instance.DeleteAppointment();
-            myGrid.DataSource = UIManager.Instance.ProjectSelectedDateToCalendar(myCalendar.SelectionRange.Start.ToShortDateString().Replace('/', '_')).Tables[0];
+            myGrid.DataSource = UIManager.Instance.ProjectSelectedDateToCalendar(myCalendar.SelectionRange.Start.ToString("yyyy/MM/dd").Replace('/', '_')).Tables[0];
             selectedAppointment.Text = "None";
         }
 

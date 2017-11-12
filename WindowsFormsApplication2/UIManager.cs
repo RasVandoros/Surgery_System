@@ -122,7 +122,7 @@ namespace WindowsFormsApplication2
             
             mainForm.Visible = false;
             mainForm.FormClosing += Form_FormClosing;
-            mainForm.VisibleChanged += OnVisibleChanged;
+           
             Application.Run(myLoggInScreen);   
         }
 
@@ -132,20 +132,32 @@ namespace WindowsFormsApplication2
             registerNewUserForm.ShowDialog();
         }
 
-        public static void OnVisibleChanged(object sender, EventArgs e)
-        {
-
-            
-
-        }
-
+        
         internal void FillStaffMembersComboBox()
         {
+            BookAppointmentForm.StffComboBox.Items.Clear();
+            
             if (bookAppointmentForm.DatePicker.Checked) 
             {
                 if (bookAppointmentForm.TimePicker.Checked) //both checked
                 {
+                    string selectedDate = BookAppointmentForm.DatePicker.Value.ToString("yyyy/MM/dd");
+                    string selectedTime = BookAppointmentForm.TimePicker.Value.ToString("hhmm");
 
+                    //NEEDS FIX
+                    string sql = @"SELECT StaffID FROM Shifts WHERE Date = '" + selectedDate + "' AND StartTime <  '" + selectedTime + "' AND FinishTime > '" + selectedTime + "' EXCEPT SELECT StaffID FROM Appointments WHERE AppointmentDate = '" + selectedDate + "'AND AppointmentTime = '" + selectedTime + "'";
+
+                    
+                    DataSet ds = DBManager.getDBConnectionInstance().getDataSet(sql);
+                    List<string> myListOfIds = new List<string>();
+                    foreach (DataRow row in ds.Tables[0].Rows)
+                    {
+                        foreach (object id in row.ItemArray)
+                        {
+                            BookAppointmentForm.StffComboBox.Items.Add(id.ToString());
+                        }
+                    }
+                    
                 }
                 else //only date checked
                 {
@@ -163,6 +175,7 @@ namespace WindowsFormsApplication2
 
                 }
             }
+            
         }
 
 

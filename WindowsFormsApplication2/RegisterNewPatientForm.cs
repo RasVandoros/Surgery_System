@@ -24,7 +24,7 @@ namespace WindowsFormsApplication2
             {
                 if (nametextBox.Text.All(Char.IsLetter))
                 {
-                    UIManager.Instance.RegisterPatient(nametextBox.Text, postcodeRegtextBox.Text, datePicker.Value.ToShortDateString().Replace('/', '_'));
+                    UIManager.Instance.RegisterPatient(nametextBox.Text, postcodeRegtextBox.Text, datePicker.Value.ToString("yyyy/MM/dd").Replace('/', '_'));
                 }
                 else
                 {
@@ -44,7 +44,7 @@ namespace WindowsFormsApplication2
             nametextBox.MaxLength = 30;
             postcodeRegtextBox.MaxLength = 10;
             this.datePicker.ShowUpDown = true;
-            this.datePicker.CustomFormat = "dd/MM/yyyy";
+            this.datePicker.CustomFormat = "yyyy/MM/dd";
             this.datePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
         }
     }

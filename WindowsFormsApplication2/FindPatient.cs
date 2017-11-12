@@ -21,7 +21,7 @@ namespace WindowsFormsApplication2
         {
             radioButtonID.Checked = true;
             this.datePicker.ShowUpDown = true;
-            this.datePicker.CustomFormat = "dd/MM/yyyy";
+            this.datePicker.CustomFormat = "yyyy / MM / dd";
             this.datePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
 
         }
@@ -83,7 +83,7 @@ namespace WindowsFormsApplication2
             {
                 if(nametextBox.Text != "" && addresstextBox.Text != "" && datePicker.Text != "")
                 {
-                    if (UIManager.Instance.ConfirmSearchPatientClick(nametextBox.Text, addresstextBox.Text, datePicker.Value.ToShortDateString().Replace('/', '_')))
+                    if (UIManager.Instance.ConfirmSearchPatientClick(nametextBox.Text, addresstextBox.Text, datePicker.Value.ToString("yyyy/MM/dd").Replace('/', '_')))
                     {
                         Utility.UpdateActivePatientLabels();
                         System.Windows.MessageBox.Show("Patient found.");
