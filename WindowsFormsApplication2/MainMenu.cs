@@ -21,6 +21,12 @@ namespace WindowsFormsApplication2
             }
         }
 
+        public DataGridView PrescriptionsGrid
+        {
+            get { return prescriptions; }
+            set { prescriptions = value; }
+        }
+
         public string NameLabelText
         {
             set
@@ -63,7 +69,6 @@ namespace WindowsFormsApplication2
         {
             
             this.MinimumSize = new System.Drawing.Size(this.Width + 50, this.Height + 50);
-
             // no larger than screen size
             this.MaximumSize = new Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
             this.AutoSize = false;
@@ -76,6 +81,10 @@ namespace WindowsFormsApplication2
             {
                 registerNewUserButton.Visible = false;
             }
+            UIManager.Instance.UpdatePrescriptionsDataGrid();
+
+            prescriptions.AutoResizeColumns();
+            
         }
 
 
@@ -105,6 +114,27 @@ namespace WindowsFormsApplication2
         private void registerNewUserButton_Click(object sender, EventArgs e)
         {
             UIManager.Instance.ShowRegisterNewUserForm();
+        }
+
+        private void OnPrescriptionGridClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int row = e.RowIndex;
+            if (row >= 0)
+            {
+                string selectedPatientMedID = prescriptions.Rows[row].Cells[0].Value.ToString();
+
+                
+            }
+        }
+
+        private void OnPrescriptionsCellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+
+            int column = e.ColumnIndex;
+            int row = e.RowIndex;
+            string value = prescriptions[column, row].Value.ToString();
+            DateTime result;
+            bool check = DateTime.TryParse(value, out result);
         }
     }
 }

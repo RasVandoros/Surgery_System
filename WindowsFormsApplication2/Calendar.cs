@@ -51,14 +51,17 @@ namespace WindowsFormsApplication2
             {
                 c.Anchor = AnchorStyles.None;
             }
+
+            myGrid.AutoResizeColumns();
+            myGrid.DataSource = UIManager.Instance.ProjectSelectedDateToCalendar(myCalendar.SelectionRange.Start.ToString("yyyy/MM/dd").Replace('/', '_')).Tables[0];
+            myGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            myGrid.Width = myGrid.Columns.Cast<DataGridViewColumn>().Sum(x => x.Width) + (myGrid.RowHeadersVisible ? myGrid.RowHeadersWidth : 0) + 3;
+            this.Width = (int)(myGrid.Width * 1.5);
         }
 
         private void OnLoad(object sender, EventArgs e)
         {
-            // TODO: This line of code loads data into the 'databaseDataSet1.Appointments' table. You can move, or remove it, as needed.
-            this.appointmentsTableAdapter1.Fill(this.databaseDataSet1.Appointments);
-            myGrid.DataSource = UIManager.Instance.ProjectSelectedDateToCalendar(myCalendar.SelectionRange.Start.ToString("yyyy/MM/dd").Replace('/', '_')).Tables[0];
-            myGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            
         }
 
         private void OnDateSelected(object sender, DateRangeEventArgs e)
@@ -68,16 +71,21 @@ namespace WindowsFormsApplication2
 
         private void myGrid_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            
             int row = e.RowIndex;
-            string selectedApID = myGrid.Rows[row].Cells[0].Value.ToString();
+            if (row >= 0)
+            {
+                string selectedApID = myGrid.Rows[row].Cells[0].Value.ToString();
+
+                UIManager.Instance.InstantiateAppointment(selectedApID);
+
+                selectedAppointment.Text = "Appointment ID: " + UIManager.Instance.ChosenAppointment.AppointmentID + "\n";
+                selectedAppointment.Text += "Appointment Time: " + UIManager.Instance.ChosenAppointment.AppointmentTime + "\n";
+                selectedAppointment.Text += "Appointment Date: " + UIManager.Instance.ChosenAppointment.AppointmentDate + "\n";
+                selectedAppointment.Text += "Patient ID: " + UIManager.Instance.ChosenAppointment.PatientID + "\n";
+                selectedAppointment.Text += "Staff Member ID: " + UIManager.Instance.ChosenAppointment.StaffID;
+            }
             
-            UIManager.Instance.InstantiateAppointment(selectedApID);
-            
-            selectedAppointment.Text = "Appointment ID: " + UIManager.Instance.ChosenAppointment.AppointmentID + "\n";
-            selectedAppointment.Text += "Appointment Time: " + UIManager.Instance.ChosenAppointment.AppointmentTime + "\n";
-            selectedAppointment.Text += "Appointment Date: " + UIManager.Instance.ChosenAppointment.AppointmentDate + "\n";
-            selectedAppointment.Text += "Patient ID: " + UIManager.Instance.ChosenAppointment.PatientID + "\n";
-            selectedAppointment.Text += "Staff Member ID: " + UIManager.Instance.ChosenAppointment.StaffID ;
         }
 
         private void deleteButton_Click(object sender, EventArgs e)

@@ -106,6 +106,20 @@ namespace WindowsFormsApplication2
         }
 
 
+        internal void UpdatePrescriptionsDataGrid()
+        {
+            if (activePatient != null)
+            {
+                mainForm.PrescriptionsGrid.DataSource = LoadPrescriptionsForPatient().Tables[0];
+
+            }
+            else
+            {
+                mainForm.PrescriptionsGrid.DataSource = LoadPrescriptions().Tables[0];
+
+            }
+           
+        }
 
         internal void ShowRegisterNewPatientForm()
         {
@@ -113,7 +127,7 @@ namespace WindowsFormsApplication2
             registerNewPatientForm.ShowDialog();
         }
 
-        public void callLoginScreen()
+        public void CallLoginScreen()
         {
             myLoggInScreen.FormClosing += Form_FormClosing;
             
@@ -163,35 +177,32 @@ namespace WindowsFormsApplication2
 
         }
 
-        internal void UpdateDataGrid()
+        internal void UpdateShiftsDataGrid()
         {
-            string selectedDate = UIManager.Instance.BookAppointmentForm.DatePicker.Value.ToString("yyyy_MM_dd");
-            string selectedTime = UIManager.Instance.BookAppointmentForm.TimePicker.Value.ToString("hh_mm");
-            string staffId = UIManager.Instance.BookAppointmentForm.StffComboBox.SelectedItem.ToString();
-
-            if (UIManager.Instance.BookAppointmentForm.StffComboBox.SelectedItem != null)
+            
+            if (BookAppointmentForm.StffComboBox.SelectedItem != null)
             {
                 if (bookAppointmentForm.DatePicker.Checked)
                 {
 
                     if (bookAppointmentForm.TimePicker.Checked) //staff+date+time
                     {
-                        UIManager.instance.BookAppointmentForm.ShiftsGrid.DataSource = UIManager.Instance.LoadShiftsForDateTimeName(selectedDate, selectedTime, staffId).Tables[0];
+                        BookAppointmentForm.ShiftsGrid.DataSource = LoadShiftsForDateTimeName(BookAppointmentForm.DatePicker.Value.ToString("yyyy_MM_dd"), BookAppointmentForm.TimePicker.Value.ToString("HH_mm"), BookAppointmentForm.StffComboBox.SelectedItem.ToString()).Tables[0];
                     }
                     else //staff+date
                     {
-
+                        BookAppointmentForm.ShiftsGrid.DataSource = LoadShiftsForDateName(BookAppointmentForm.DatePicker.Value.ToString("yyyy_MM_dd"), BookAppointmentForm.StffComboBox.SelectedItem.ToString()).Tables[0];
                     }
                 }
                 else
                 {
                     if (bookAppointmentForm.TimePicker.Checked) //staff+time
                     {
-                        
+                        BookAppointmentForm.ShiftsGrid.DataSource = LoadShiftsForTimeName(BookAppointmentForm.TimePicker.Value.ToString("HH_mm"), BookAppointmentForm.StffComboBox.SelectedItem.ToString()).Tables[0];
                     }
                     else //staff
                     {
-                        
+                        BookAppointmentForm.ShiftsGrid.DataSource = LoadShiftsForName(BookAppointmentForm.StffComboBox.SelectedItem.ToString()).Tables[0];
                     }
                 }
             }
@@ -202,31 +213,106 @@ namespace WindowsFormsApplication2
 
                     if (bookAppointmentForm.TimePicker.Checked) //date+time
                     {
-
+                        BookAppointmentForm.ShiftsGrid.DataSource = LoadShiftsForDateTime(BookAppointmentForm.DatePicker.Value.ToString("yyyy_MM_dd"), BookAppointmentForm.TimePicker.Value.ToString("HH_mm")).Tables[0];
                     }
                     else //date
                     {
-
+                        BookAppointmentForm.ShiftsGrid.DataSource = LoadShiftsForDate(BookAppointmentForm.DatePicker.Value.ToString("yyyy_MM_dd")).Tables[0];
                     }
                 }
                 else
                 {
                     if (bookAppointmentForm.TimePicker.Checked) //time
                     {
-
+                        UIManager.instance.BookAppointmentForm.ShiftsGrid.DataSource = LoadShiftsForTime(BookAppointmentForm.TimePicker.Value.ToString("HH_mm")).Tables[0];
                     }
                     else //none
                     {
-
+                        UIManager.instance.BookAppointmentForm.ShiftsGrid.DataSource = LoadShifts().Tables[0];
                     }
                 }
             }
         }
 
+        private DataSet LoadPrescriptions()
+        {
+            DataSet ds = new DataSet();
+            string sql = @"SELECT * FROM  PatientsMeds ";
+
+            ds = DBManager.getDBConnectionInstance().getDataSet(sql);
+            return ds;
+        }
+
+
+        private DataSet LoadShiftsForTime(string selectedTime)
+        {
+            DataSet ds = new DataSet();
+            string sql = @"SELECT * FROM Shifts WHERE StartTime <= '" + selectedTime + "' AND FinishTime >= '" + selectedTime + "' ";
+
+            ds = DBManager.getDBConnectionInstance().getDataSet(sql);
+            return ds;
+        }
+
+
+        private DataSet LoadPrescriptionsForPatient()
+        {
+            DataSet ds = new DataSet();
+            string sql = @"SELECT * FROM PatientsMeds WHERE PatientID = '" + activePatient.PatientId + "' ";
+
+            ds = DBManager.getDBConnectionInstance().getDataSet(sql);
+            return ds;
+        }
+
+
+        private DataSet LoadShiftsForDate(string selectedDate)
+        {
+            DataSet ds = new DataSet();
+            string sql = @"SELECT * FROM Shifts WHERE Date = '" + selectedDate + "' ";
+
+            ds = DBManager.getDBConnectionInstance().getDataSet(sql);
+            return ds;
+        }
+
+        private DataSet LoadShiftsForDateTime(string selectedDate, string selectedTime)
+        {
+            DataSet ds = new DataSet();
+            string sql = @"SELECT * FROM Shifts WHERE Date = '" + selectedDate + "' AND StartTime <= '" + selectedTime + "' AND FinishTime >= '" + selectedTime + "' ";
+
+            ds = DBManager.getDBConnectionInstance().getDataSet(sql);
+            return ds;
+        }
+
+        private DataSet LoadShiftsForName(string staffID)
+        {
+            DataSet ds = new DataSet();
+            string sql = @"SELECT * FROM Shifts WHERE StaffId = '" + staffID + "' ";
+
+            ds = DBManager.getDBConnectionInstance().getDataSet(sql);
+            return ds;
+        }
+
+        private DataSet LoadShiftsForTimeName(string selectedTime, string staffID)
+        {
+            DataSet ds = new DataSet();
+            string sql = @"SELECT * FROM Shifts WHERE StartTime <= '" + selectedTime + "' AND FinishTime >= '" + selectedTime + "' AND StaffId = '" + staffID + "' ";
+
+            ds = DBManager.getDBConnectionInstance().getDataSet(sql);
+            return ds;
+        }
+
+        private DataSet LoadShiftsForDateName(string selectedDate, string staffID)
+        {
+            DataSet ds = new DataSet();
+            string sql = @"SELECT * FROM Shifts WHERE Date = '" + selectedDate + "' AND StaffId = '" + staffID + "' ";
+
+            ds = DBManager.getDBConnectionInstance().getDataSet(sql);
+            return ds;
+        }
+
         private DataSet LoadShiftsForDateTimeName(string selectedDate, string selectedTime, string staffID)
         {
             DataSet ds = new DataSet();
-            string sql = @"SELECT * FROM Shifts WHERE Date = '" + selectedDate + "' AND StartTime <= '" + selectedTime + "' AND FinishTime >= '" + selectedTime + "' AND StaffId = '" + staffID + "' AND <> (SELECT StaffID FROM Appointments WHERE AppointmentDate = '" + selectedDate + "'AND AppointmentTime = '" + selectedTime + "')";
+            string sql = @"SELECT * FROM Shifts WHERE Date = '" + selectedDate + "' AND StartTime <= '" + selectedTime + "' AND FinishTime >= '" + selectedTime + "' AND StaffId = '" + staffID + "' ";
 
             ds = DBManager.getDBConnectionInstance().getDataSet(sql);
             return ds;
