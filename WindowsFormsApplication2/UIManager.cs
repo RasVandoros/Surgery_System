@@ -28,35 +28,26 @@ namespace WindowsFormsApplication2
             get { return registerNewUserForm; }
             set { registerNewUserForm = value; }
         }
-
-
         public BookAppointmentForm BookAppointmentForm
         {
             get { return bookAppointmentForm; }
             set { bookAppointmentForm = value; }
         }
-
         public RegisterNewPatientForm RegisterNewPatientForm
         {
             get { return registerNewPatientForm; }
             set { registerNewPatientForm = value; }
         }
-
-
         public FindPatient FindPatientForm
         {
             get { return findPatientForm; }
             set { findPatientForm = value; }
         }
-
         public Appointment ChosenAppointment
         {
             get { return chosenAppointment; }
             set { chosenAppointment = value; }
         }
-
-        
-
         public User ActiveUser
         {
             get { return activeUser; }
@@ -67,7 +58,6 @@ namespace WindowsFormsApplication2
             }
            
         }
-
         public Patient ActivePatient
         {
             get { return activePatient; }
@@ -78,8 +68,17 @@ namespace WindowsFormsApplication2
             }
 
         }
-
-
+        public Calendar MyCalendarForm
+        {
+            get
+            {
+                return calendarForm;
+            }
+            set
+            {
+                calendarForm = value;
+            }
+        }
         public MainForm MainForm
         {
             get { return mainForm; }
@@ -92,16 +91,12 @@ namespace WindowsFormsApplication2
         }
 
         private static readonly UIManager instance = new UIManager();
-        
-
         static UIManager()
         {
         }
-
         private UIManager()
         {
         }
-
         public static UIManager Instance
         {
             get
@@ -109,6 +104,8 @@ namespace WindowsFormsApplication2
                 return instance;
             }
         }
+
+
 
         internal void ShowRegisterNewPatientForm()
         {
@@ -132,85 +129,160 @@ namespace WindowsFormsApplication2
             registerNewUserForm.ShowDialog();
         }
 
-        
-        internal void FillStaffMembersComboBox(string selectedDate, string selectedTIme)
+        internal DataSet GetComboBoxDs(string selectedDate, string selectedTIme)
         {
             BookAppointmentForm.StffComboBox.Items.Clear();
-            
-            if (bookAppointmentForm.DatePicker.Checked) 
+            DataSet ds;
+            if (bookAppointmentForm.DatePicker.Checked)
             {
                 if (bookAppointmentForm.TimePicker.Checked) //both checked
                 {
-                                        
-                    //The sql grabs all the StaffIds from the Shifts table that have a starting time earlier than the selected time, finish time later than the selected time
-                    //and selected date equal to the selected date
-                    //And then excludes from them, those IDs that have an appointment already booked for the selected date AND time
-                    string sql = @"SELECT StaffID FROM Shifts WHERE Date = '" + selectedDate + "' AND StartTime <=  '" + selectedTIme + "' AND FinishTime >= '" + selectedTIme + "' EXCEPT SELECT StaffID FROM Appointments WHERE AppointmentDate = '" + selectedDate + "'AND AppointmentTime = '" + selectedTIme + "'";
 
-                    
-                    DataSet ds = DBManager.getDBConnectionInstance().getDataSet(sql);
 
-                    foreach (DataRow row in ds.Tables[0].Rows)
-                    {
-                        foreach (object id in row.ItemArray)
-                        {
-                            BookAppointmentForm.StffComboBox.Items.Add(id.ToString());
-                        }
-                    }
-                    
+                    ds = UIManager.instance.LoadShiftsIdByDateTime(selectedDate, selectedTIme);
                 }
                 else //only date checked
                 {
-                    //This statement grabs all StaffIds that are on duty during selected date
-                    string sql = @"SELECT StaffID FROM Shifts WHERE Date = '" + selectedDate + "'";
-
-                    DataSet ds = DBManager.getDBConnectionInstance().getDataSet(sql);
-
-                    foreach (DataRow row in ds.Tables[0].Rows)
-                    {
-                        foreach (object id in row.ItemArray)
-                        {
-                            BookAppointmentForm.StffComboBox.Items.Add(id.ToString());
-                        }
-                    }
+                    ds = UIManager.instance.LoadShiftsIdByDate(selectedDate);
                 }
             }
             else
             {
                 if (bookAppointmentForm.TimePicker.Checked) //only time checked
                 {
-                    string sql = @"SELECT StaffID FROM Shifts WHERE StartTime <=  '" + selectedTIme + "' AND FinishTime >= '" + selectedTIme + "'";
-
-
-                    DataSet ds = DBManager.getDBConnectionInstance().getDataSet(sql);
-
-                    foreach (DataRow row in ds.Tables[0].Rows)
-                    {
-                        foreach (object id in row.ItemArray)
-                        {
-                            BookAppointmentForm.StffComboBox.Items.Add(id.ToString());
-                        }
-                    }
+                    ds = UIManager.instance.LoadShiftsIdByTime(selectedDate);
                 }
                 else //none checked
                 {
-                    string sql = @"SELECT DISTINCT StaffID FROM Shifts";
-
-
-                    DataSet ds = DBManager.getDBConnectionInstance().getDataSet(sql);
-
-                    foreach (DataRow row in ds.Tables[0].Rows)
-                    {
-                        foreach (object id in row.ItemArray)
-                        {
-                            BookAppointmentForm.StffComboBox.Items.Add(id.ToString());
-                        }
-                    }
+                    ds = UIManager.instance.LoadShiftsIdDistinct();
                 }
             }
             
+
+            return ds;
+
         }
 
+        internal void UpdateDataGrid()
+        {
+            string selectedDate = UIManager.Instance.BookAppointmentForm.DatePicker.Value.ToString("yyyy_MM_dd");
+            string selectedTime = UIManager.Instance.BookAppointmentForm.TimePicker.Value.ToString("hh_mm");
+            string staffId = UIManager.Instance.BookAppointmentForm.StffComboBox.SelectedItem.ToString();
+
+            if (UIManager.Instance.BookAppointmentForm.StffComboBox.SelectedItem != null)
+            {
+                if (bookAppointmentForm.DatePicker.Checked)
+                {
+
+                    if (bookAppointmentForm.TimePicker.Checked) //staff+date+time
+                    {
+                        UIManager.instance.BookAppointmentForm.ShiftsGrid.DataSource = UIManager.Instance.LoadShiftsForDateTimeName(selectedDate, selectedTime, staffId).Tables[0];
+                    }
+                    else //staff+date
+                    {
+
+                    }
+                }
+                else
+                {
+                    if (bookAppointmentForm.TimePicker.Checked) //staff+time
+                    {
+                        
+                    }
+                    else //staff
+                    {
+                        
+                    }
+                }
+            }
+            else
+            {
+                if (bookAppointmentForm.DatePicker.Checked)
+                {
+
+                    if (bookAppointmentForm.TimePicker.Checked) //date+time
+                    {
+
+                    }
+                    else //date
+                    {
+
+                    }
+                }
+                else
+                {
+                    if (bookAppointmentForm.TimePicker.Checked) //time
+                    {
+
+                    }
+                    else //none
+                    {
+
+                    }
+                }
+            }
+        }
+
+        private DataSet LoadShiftsForDateTimeName(string selectedDate, string selectedTime, string staffID)
+        {
+            DataSet ds = new DataSet();
+            string sql = @"SELECT * FROM Shifts WHERE Date = '" + selectedDate + "' AND StartTime <= '" + selectedTime + "' AND FinishTime >= '" + selectedTime + "' AND StaffId = '" + staffID + "' AND <> (SELECT StaffID FROM Appointments WHERE AppointmentDate = '" + selectedDate + "'AND AppointmentTime = '" + selectedTime + "')";
+
+            ds = DBManager.getDBConnectionInstance().getDataSet(sql);
+            return ds;
+        }
+
+        internal DataSet LoadShifts()
+        {
+            DataSet ds = new DataSet();
+            string sql = @"SELECT * FROM Shifts";
+
+            ds = DBManager.getDBConnectionInstance().getDataSet(sql);
+
+            return ds;
+        }
+          
+        private DataSet LoadShiftsIdDistinct ()
+        {
+            string sql = @"SELECT DISTINCT StaffID FROM Shifts";
+            
+            return DBManager.getDBConnectionInstance().getDataSet(sql);
+
+        }
+
+        public DataSet LoadShiftsIdByTime(string selectedTIme)
+        {
+            string sql = @"SELECT StaffID FROM Shifts WHERE StartTime <=  '" + selectedTIme + "' AND FinishTime >= '" + selectedTIme + "'";
+
+
+            return DBManager.getDBConnectionInstance().getDataSet(sql);
+        }
+
+        public DataSet LoadShiftsIdByDate(string selectedDate)
+        {
+            //This statement grabs all StaffIds that are on duty during selected date
+            string sql = @"SELECT StaffID FROM Shifts WHERE Date = '" + selectedDate + "'";
+
+            return  DBManager.getDBConnectionInstance().getDataSet(sql);
+        }
+
+        /// <summary>
+        ///  The sql grabs all the StaffIds from the Shifts table that have a 
+        ///  starting time earlier than the selected time and 
+        ///  finish time later than the selected time
+        ///  and selected date equal to the selected date
+        ///  Then it excludes from them, those IDs that have an appointment already booked for the selected date AND time
+        /// </summary>
+        /// <param name="selectedDate"></param>
+        /// <param name="selectedTime"></param>
+        /// <returns></returns>
+        public DataSet LoadShiftsIdByDateTime(string selectedDate, string selectedTime)
+        {
+            string sql = @"SELECT StaffID FROM Shifts WHERE Date = '" + selectedDate + "' AND StartTime <=  '" + selectedTime + "' AND FinishTime >= '" + selectedTime + "' EXCEPT SELECT StaffID FROM Appointments WHERE AppointmentDate = '" + selectedDate + "'AND AppointmentTime = '" + selectedTime + "'";
+
+
+            return DBManager.getDBConnectionInstance().getDataSet(sql);
+        }
 
         internal void RegisterUser(string username, string password, string jobTitle)
         {
@@ -236,7 +308,6 @@ namespace WindowsFormsApplication2
             }
         }
 
-
         internal void RegisterPatient(string patientName, string postcode, string dob)
         {
             if(!ConfirmSearchPatientClick(patientName, postcode, dob))
@@ -259,7 +330,6 @@ namespace WindowsFormsApplication2
 
             }
         }
-
 
         internal DataSet ProjectSelectedDateToCalendar(string selectedDate)
         {
@@ -343,7 +413,6 @@ namespace WindowsFormsApplication2
             bookAppointmentForm.ShowDialog();
         }
     
-
         public void logOffBut_ClickUi(EventArgs e)
         {
             const string message = "Are you sure that you would like to log out?";
@@ -435,9 +504,12 @@ namespace WindowsFormsApplication2
            
              
         }
-
-        
+     
     }
+
+
+
+
     public static class Utility
     {
         public static bool CheckFind(DataSet ds)

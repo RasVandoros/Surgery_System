@@ -60,6 +60,17 @@ namespace WindowsFormsApplication2
             }
         }
 
+        public DataGridView ShiftsGrid
+        {
+            get
+            {
+                return shiftsGrid;
+            }
+            set
+            {
+                shiftsGrid = value;
+            }
+        }
 
         public BookAppointmentForm()
         {
@@ -81,10 +92,16 @@ namespace WindowsFormsApplication2
                 this.patientNameTxtbox.Text = UIManager.Instance.ActivePatient.PatientName;
 
             }
-            else
-            {
-                
-            }
+            this.shiftsGrid.DataSource = UIManager.Instance.LoadShifts().Tables[0];
+
+            shiftsGrid.AutoResizeColumns();
+
+        }
+
+
+        private void OnComboboxSelectionChange(object sender, EventArgs e)
+        {
+            //UIManager.Instance.UpdateDataGrid();
         }
 
         private void findPatient_Click(object sender, EventArgs e)
@@ -103,6 +120,20 @@ namespace WindowsFormsApplication2
         private void chooseTime_Click(object sender, EventArgs e)
         {
 
+            UIManager.Instance.UpdateDataGrid();
+            /*try
+            {
+                if (UIManager.Instance.BookAppointmentForm.StffComboBox.SelectedItem != null)
+                {
+                    MessageBox.Show(UIManager.Instance.BookAppointmentForm.StffComboBox.SelectedItem.ToString());
+
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Error");
+            }
+            */
         }
 
         private void OnComboBoxClick(object sender, EventArgs e)
@@ -110,11 +141,18 @@ namespace WindowsFormsApplication2
             string selectedDate = UIManager.Instance.BookAppointmentForm.DatePicker.Value.ToString("yyyy_MM_dd");
             string selectedTime = UIManager.Instance.BookAppointmentForm.TimePicker.Value.ToString("hh_mm");
 
-            UIManager.Instance.FillStaffMembersComboBox(selectedDate, selectedTime);
-            
+            DataSet ds =  UIManager.Instance.GetComboBoxDs(selectedDate, selectedTime);
+            foreach (DataRow row in ds.Tables[0].Rows)
+            {
+                foreach (object id in row.ItemArray)
+                {
+                    UIManager.Instance.BookAppointmentForm.StffComboBox.Items.Add(id.ToString());
+                }
+            }
+
         }
 
-        private void OnValueChanged(object sender, EventArgs e)
+        private void OnCalendarValueChanged(object sender, EventArgs e)
         {
             UIManager.Instance.BookAppointmentForm.StffComboBox.SelectedItem = null;
             UIManager.Instance.BookAppointmentForm.submitButton.Enabled = false;

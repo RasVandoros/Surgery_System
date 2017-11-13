@@ -12,10 +12,26 @@ namespace WindowsFormsApplication2
 {
     public partial class Calendar : Form
     {
+        public MonthCalendar MyCalendarOb
+        {
+            get
+            {
+                return myCalendar;
+            }
+            set
+            {
+                myCalendar = value;
+            }
+        }
+
+
+
         public Calendar()
         {
             InitializeComponent();
             this.MinimumSize = new System.Drawing.Size(this.Width + 50, this.Height + 50);
+
+            
 
             // no larger than screen size
             this.MaximumSize = new Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
@@ -76,6 +92,8 @@ namespace WindowsFormsApplication2
         {
             UIManager.Instance.ShowBookAppointmentForm();
         }
+
+       
     }
 }
 

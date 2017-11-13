@@ -39,6 +39,8 @@
             this.submitButton = new System.Windows.Forms.Button();
             this.findPatient = new System.Windows.Forms.Button();
             this.stffNameComboBox = new System.Windows.Forms.ComboBox();
+            this.shiftsGrid = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.shiftsGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // patientNameLabel
@@ -84,7 +86,7 @@
             this.datePicker.ShowCheckBox = true;
             this.datePicker.Size = new System.Drawing.Size(151, 20);
             this.datePicker.TabIndex = 8;
-            this.datePicker.ValueChanged += new System.EventHandler(this.OnValueChanged);
+            this.datePicker.ValueChanged += new System.EventHandler(this.OnCalendarValueChanged);
             // 
             // time
             // 
@@ -103,7 +105,7 @@
             this.timePicker.ShowCheckBox = true;
             this.timePicker.Size = new System.Drawing.Size(151, 20);
             this.timePicker.TabIndex = 9;
-            this.timePicker.ValueChanged += new System.EventHandler(this.OnValueChanged);
+            this.timePicker.ValueChanged += new System.EventHandler(this.OnCalendarValueChanged);
             // 
             // chooseTime
             // 
@@ -144,13 +146,23 @@
             this.stffNameComboBox.Size = new System.Drawing.Size(151, 21);
             this.stffNameComboBox.TabIndex = 14;
             this.stffNameComboBox.SelectionChangeCommitted += new System.EventHandler(this.stffNameComboBox_SelectionChangeCommitted);
+            this.stffNameComboBox.SelectedValueChanged += new System.EventHandler(this.OnComboboxSelectionChange);
             this.stffNameComboBox.Click += new System.EventHandler(this.OnComboBoxClick);
+            // 
+            // shiftsGrid
+            // 
+            this.shiftsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.shiftsGrid.Location = new System.Drawing.Point(385, 82);
+            this.shiftsGrid.Name = "shiftsGrid";
+            this.shiftsGrid.Size = new System.Drawing.Size(375, 281);
+            this.shiftsGrid.TabIndex = 15;
             // 
             // BookAppointmentForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(378, 403);
+            this.ClientSize = new System.Drawing.Size(779, 443);
+            this.Controls.Add(this.shiftsGrid);
             this.Controls.Add(this.stffNameComboBox);
             this.Controls.Add(this.findPatient);
             this.Controls.Add(this.submitButton);
@@ -165,6 +177,7 @@
             this.Name = "BookAppointmentForm";
             this.Text = "ModifyAppointmentForm";
             this.Load += new System.EventHandler(this.OnLoad);
+            ((System.ComponentModel.ISupportInitialize)(this.shiftsGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -183,5 +196,6 @@
         private System.Windows.Forms.Button submitButton;
         private System.Windows.Forms.Button findPatient;
         private System.Windows.Forms.ComboBox stffNameComboBox;
+        private System.Windows.Forms.DataGridView shiftsGrid;
     }
 }
