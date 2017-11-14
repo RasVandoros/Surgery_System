@@ -144,5 +144,10 @@ namespace WindowsFormsApplication2
 
 
         }
+
+        private void submitButton_Click(object sender, EventArgs e)
+        {
+            UIManager.Instance.SubmitAppointmentRequest();
+        }
     }
 }

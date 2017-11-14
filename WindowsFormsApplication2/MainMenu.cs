@@ -12,8 +12,10 @@ using System.Globalization;
 
 namespace WindowsFormsApplication2
 {
+    #region
     public partial class MainForm : Form
     {
+        #region properties
         public string IdLabelTxt
         {
             set
@@ -60,13 +62,16 @@ namespace WindowsFormsApplication2
             }
         }
 
-
+        #endregion
 
         public MainForm()
         {
             InitializeComponent();
 
         }
+
+
+        #region Events
 
         private void MainMenu_Load(object sender, EventArgs e)
         {
@@ -87,6 +92,12 @@ namespace WindowsFormsApplication2
             UIManager.Instance.UpdatePrescriptionsDataGrid();
 
             prescriptions.AutoResizeColumns();
+
+            foreach (DataGridViewColumn c in prescriptions.Columns)
+            {
+                c.ReadOnly = true;
+            }
+            prescriptions.Columns[4].ReadOnly = false;
 
         }
 
@@ -164,6 +175,7 @@ namespace WindowsFormsApplication2
                         if (UIManager.Instance.ActiveUser.Job == Job.Receptionist)
                         {
                             System.Windows.Forms.MessageBox.Show("Date Requested is earlier than the originally assigned date. Authorisation by manager is required");
+                            BeginInvoke(new MethodInvoker(UIManager.Instance.UpdatePrescriptionsDataGrid));
                         }
                         else
                         {
@@ -175,6 +187,7 @@ namespace WindowsFormsApplication2
                 else
                 {
                     System.Windows.Forms.MessageBox.Show("Wrong Input inserted. Please make sure the requested extention is in the specified format. (yyyy_MM_dd)");
+                    BeginInvoke(new MethodInvoker(UIManager.Instance.UpdatePrescriptionsDataGrid));
                 }
             }
             else
@@ -195,5 +208,8 @@ namespace WindowsFormsApplication2
 
 
         }
+        #endregion
     }
+    #endregion
+
 }

@@ -173,6 +173,8 @@ namespace WindowsFormsApplication2
 
         }
 
+        
+
         internal DataSet GetComboBoxDs(string selectedDate, string selectedTIme)
         {
             BookAppointmentForm.StffComboBox.Items.Clear();
@@ -297,6 +299,7 @@ namespace WindowsFormsApplication2
             ds = DBManager.getDBConnectionInstance().getDataSet(sql);
 
         }
+
 
         internal void DeleteExtention(string medID, string patientId)
         {
@@ -506,9 +509,66 @@ namespace WindowsFormsApplication2
             {
                 MessageBox.Show("Appointment Data Corrupted");
             }
-            
+        }
 
+        internal void SubmitAppointmentRequest()
+        {
+            string stffID = BookAppointmentForm.StffComboBox.SelectedItem.ToString();
+            string patientID = activePatient.PatientId;
+            string appointmentDate = "";
+            string appointmentTime = "";
+            string sql = "";
             
+            for (int i = 0; i<12; i++)
+            {
+                
+                for (int j = 0; j < 60; j++)
+                {
+
+                }
+                    //Timetable.Add(new List<int>());
+            }
+
+            if (BookAppointmentForm.DatePicker.Checked == true)
+            {
+                if (BookAppointmentForm.TimePicker.Checked == true)//both
+                {
+                    appointmentDate = BookAppointmentForm.DatePicker.Value.ToString("yyyy_MM_dd");
+                    appointmentTime = BookAppointmentForm.TimePicker.Value.ToString("HH:mm");
+
+                    sql = @"INSERT INTO Appointments (AppointmentDate, AppointmentTime, StaffID, PatientID) VALUES  ( '" + appointmentDate + "', '" + appointmentTime + "', '" + stffID + "', '" + patientID + "')";
+                    DataSet ds = DBManager.getDBConnectionInstance().getDataSet(sql);
+                    MessageBox.Show("Appointment booked successfully!");
+                    Form.ActiveForm.Close();
+                }
+                else//only date
+                {
+                    
+                    appointmentDate = BookAppointmentForm.DatePicker.Value.ToString("yyyy_MM_dd");
+                    for (int hour = 9; hour < 21; hour++)
+                    {
+                        for (int min = 0; min < 60; min++)
+                        {
+
+                        }
+                    }
+                    //appointmentTime = 
+                }
+            }
+            else//only time
+            {
+                appointmentTime = BookAppointmentForm.TimePicker.Value.ToString("HH:mm");
+            }
+
+
+            try
+            {
+                
+            }
+            catch
+            {
+                MessageBox.Show("Error executing the sql");
+            }
         }
 
         internal void DeleteAppointment()

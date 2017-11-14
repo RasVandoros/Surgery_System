@@ -20,7 +20,6 @@ namespace WindowsFormsApplication2
 
         private SqlDataAdapter dataAdapter;
 
-
         //properties
         public static string ConnectionStr
         {
@@ -75,8 +74,6 @@ namespace WindowsFormsApplication2
 
             return dataSet;
         }
-
-       
     }
 }
 

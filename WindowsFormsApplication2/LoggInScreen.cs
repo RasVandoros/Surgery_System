@@ -44,6 +44,8 @@ namespace WindowsFormsApplication2
                 Utility.SwapVisibility();
                 passwordTxtBox.Text = "";
                 invalidTextBox.Visible = false;
+                UIManager.Instance.UpdatePrescriptionsDataGrid();
+                Utility.UpdateActivePatientLabels();
             }
             else
             {
