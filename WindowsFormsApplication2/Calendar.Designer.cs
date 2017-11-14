@@ -37,14 +37,11 @@
             this.selectedAppointment = new System.Windows.Forms.Label();
             this.bookAppointment = new System.Windows.Forms.Button();
             this.deleteButton = new System.Windows.Forms.Button();
-            this.databaseDataSet1 = new WindowsFormsApplication2.DatabaseDataSet1();
             this.appointmentsBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.appointmentsTableAdapter1 = new WindowsFormsApplication2.DatabaseDataSet1TableAdapters.AppointmentsTableAdapter();
             this.selApHeader = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.myGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.databaseDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.appointmentsBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.databaseDataSet1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.appointmentsBindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -113,20 +110,6 @@
             this.deleteButton.UseVisualStyleBackColor = true;
             this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
             // 
-            // databaseDataSet1
-            // 
-            this.databaseDataSet1.DataSetName = "DatabaseDataSet1";
-            this.databaseDataSet1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // appointmentsBindingSource1
-            // 
-            this.appointmentsBindingSource1.DataMember = "Appointments";
-            this.appointmentsBindingSource1.DataSource = this.databaseDataSet1;
-            // 
-            // appointmentsTableAdapter1
-            // 
-            this.appointmentsTableAdapter1.ClearBeforeFill = true;
-            // 
             // selApHeader
             // 
             this.selApHeader.AutoSize = true;
@@ -154,7 +137,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.myGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.databaseDataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.appointmentsBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.databaseDataSet1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.appointmentsBindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -171,9 +153,7 @@
         private System.Windows.Forms.Label selectedAppointment;
         private System.Windows.Forms.Button bookAppointment;
         private System.Windows.Forms.Button deleteButton;
-        private DatabaseDataSet1 databaseDataSet1;
         private System.Windows.Forms.BindingSource appointmentsBindingSource1;
-        private DatabaseDataSet1TableAdapters.AppointmentsTableAdapter appointmentsTableAdapter1;
         private System.Windows.Forms.Label selApHeader;
     }
 }
