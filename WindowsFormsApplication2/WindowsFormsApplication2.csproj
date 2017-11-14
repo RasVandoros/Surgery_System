@@ -121,6 +121,7 @@
     </Compile>
     <Compile Include="UIManager.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="Utility.cs" />
     <EmbeddedResource Include="Calendar.resx">
       <DependentUpon>Calendar.cs</DependentUpon>
     </EmbeddedResource>

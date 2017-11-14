@@ -79,6 +79,7 @@ namespace WindowsFormsApplication2
 
         private void OnLoad(object sender, EventArgs e)
         {
+            
             this.timePicker.ShowUpDown = true;
             this.timePicker.CustomFormat = "HH:mm";
             this.timePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;

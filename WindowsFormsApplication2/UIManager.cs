@@ -6,11 +6,34 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
+
 
 namespace WindowsFormsApplication2
 {
+    #region UIManager
     public sealed class UIManager
     {
+        #region Singleton
+
+        private static readonly UIManager instance = new UIManager();
+        static UIManager()
+        {
+        }
+        private UIManager()
+        {
+        }
+        public static UIManager Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+
+        #endregion
+
+        #region Fields
 
         private MainForm mainForm = new MainForm();
         private LoggInScreen myLoggInScreen = new LoggInScreen();
@@ -23,6 +46,15 @@ namespace WindowsFormsApplication2
         private RegisterNewPatientForm registerNewPatientForm;
         private RegisterNewUser registerNewUserForm;
 
+        #endregion
+
+        #region Properties
+
+        public LoggInScreen MyLogginScreen
+        {
+            get { return myLoggInScreen; }
+            set { myLoggInScreen = value; }
+        }
         public RegisterNewUser RegisterNewUserForm
         {
             get { return registerNewUserForm; }
@@ -90,36 +122,9 @@ namespace WindowsFormsApplication2
 
         }
 
-        private static readonly UIManager instance = new UIManager();
-        static UIManager()
-        {
-        }
-        private UIManager()
-        {
-        }
-        public static UIManager Instance
-        {
-            get
-            {
-                return instance;
-            }
-        }
+        #endregion
 
-
-        internal void UpdatePrescriptionsDataGrid()
-        {
-            if (activePatient != null)
-            {
-                mainForm.PrescriptionsGrid.DataSource = LoadPrescriptionsForPatient().Tables[0];
-
-            }
-            else
-            {
-                mainForm.PrescriptionsGrid.DataSource = LoadPrescriptions().Tables[0];
-
-            }
-           
-        }
+        #region Call Forms Methods
 
         internal void ShowRegisterNewPatientForm()
         {
@@ -141,6 +146,31 @@ namespace WindowsFormsApplication2
         {
             registerNewUserForm = new RegisterNewUser();
             registerNewUserForm.ShowDialog();
+        }
+
+        internal void showCalendar()
+        {
+            calendarForm = new Calendar();
+            calendarForm.ShowDialog();
+        }
+
+        #endregion
+
+        #region Update Methods
+
+        internal void UpdatePrescriptionsDataGrid()
+        {
+            if (activePatient != null)
+            {
+                mainForm.PrescriptionsGrid.DataSource = LoadPrescriptionsForPatient().Tables[0];
+
+            }
+            else
+            {
+                mainForm.PrescriptionsGrid.DataSource = LoadPrescriptions().Tables[0];
+
+            }
+
         }
 
         internal DataSet GetComboBoxDs(string selectedDate, string selectedTIme)
@@ -171,7 +201,7 @@ namespace WindowsFormsApplication2
                     ds = UIManager.instance.LoadShiftsIdDistinct();
                 }
             }
-            
+
 
             return ds;
 
@@ -179,7 +209,7 @@ namespace WindowsFormsApplication2
 
         internal void UpdateShiftsDataGrid()
         {
-            
+
             if (BookAppointmentForm.StffComboBox.SelectedItem != null)
             {
                 if (bookAppointmentForm.DatePicker.Checked)
@@ -234,6 +264,48 @@ namespace WindowsFormsApplication2
             }
         }
 
+        internal void showFindPatientForm()
+        {
+            findPatientForm = new FindPatient();
+            findPatientForm.ShowDialog();
+        }
+
+        internal void ShowBookAppointmentForm()
+        {
+            bookAppointmentForm = new BookAppointmentForm();
+            bookAppointmentForm.ShowDialog();
+        }
+
+        #endregion
+
+        #region GetDataset Methods
+
+        internal DataSet LoadNotes(string medID)
+        {
+            
+            string sql = @"SELECT MedName, Notes  FROM Meds WHERE Id = '" + medID + "'";
+
+            return DBManager.getDBConnectionInstance().getDataSet(sql);
+        }
+
+        internal void ExtendPrescrption(string medID, string patientID, string extendDate)
+        {
+
+            DataSet ds = new DataSet();
+            string sql = @"UPDATE PatientsMeds SET ExtentionDate = '" + extendDate + "' WHERE MedId = '" + medID + "' AND PatientID = '" + patientID + "'";
+
+            ds = DBManager.getDBConnectionInstance().getDataSet(sql);
+
+        }
+
+        internal void DeleteExtention(string medID, string patientId)
+        {
+            DataSet ds = new DataSet();
+            string sql = @"UPDATE PatientsMeds SET ExtentionDate = NULL WHERE MedId = '" + medID + "' AND PatientID = '" + patientId + "'";
+
+            ds = DBManager.getDBConnectionInstance().getDataSet(sql);
+        }
+
         private DataSet LoadPrescriptions()
         {
             DataSet ds = new DataSet();
@@ -242,7 +314,6 @@ namespace WindowsFormsApplication2
             ds = DBManager.getDBConnectionInstance().getDataSet(sql);
             return ds;
         }
-
 
         private DataSet LoadShiftsForTime(string selectedTime)
         {
@@ -253,7 +324,6 @@ namespace WindowsFormsApplication2
             return ds;
         }
 
-
         private DataSet LoadPrescriptionsForPatient()
         {
             DataSet ds = new DataSet();
@@ -262,7 +332,6 @@ namespace WindowsFormsApplication2
             ds = DBManager.getDBConnectionInstance().getDataSet(sql);
             return ds;
         }
-
 
         private DataSet LoadShiftsForDate(string selectedDate)
         {
@@ -442,35 +511,9 @@ namespace WindowsFormsApplication2
             
         }
 
-        private void Form_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            CloseCancel(e);
-        }
-
-        public void swapVisibility()
-        {
-            if(myLoggInScreen.Visible == true)
-            {
-                myLoggInScreen.Visible = false;
-                mainForm.Visible = true;
-            }
-            else if(mainForm.Visible == true)
-            {
-                mainForm.Visible = false;
-                myLoggInScreen.Visible = true;
-                
-            }
-        }
-
-        internal void showFindPatientForm()
-        {
-            findPatientForm = new FindPatient();
-            findPatientForm.ShowDialog();
-        }
-
         internal void DeleteAppointment()
         {
-            if(chosenAppointment != null)
+            if (chosenAppointment != null)
             {
                 string sql = @"DELETE FROM Appointments WHERE Id = '" + chosenAppointment.AppointmentID + "'";
 
@@ -485,20 +528,70 @@ namespace WindowsFormsApplication2
 
                 }
             }
-           else
+            else
             {
                 MessageBox.Show("No appointmnet was selected");
 
             }
-            
+
         }
 
-        internal void ShowBookAppointmentForm()
+        internal bool ConfirmSearchPatientClick(string name, string postcode, string dOb)
         {
-            bookAppointmentForm = new BookAppointmentForm();
-            bookAppointmentForm.ShowDialog();
+            string sql = @"SELECT * FROM Patients WHERE PatientName = '" + name + "'AND Address = '" + postcode + "'AND dateOfBirth = '" + dOb + "'";
+            DataSet ds = DBManager.getDBConnectionInstance().getDataSet(sql);
+            if (Utility.CheckFind(ds))
+            {
+                UIManager.Instance.activePatient = new Patient(ds);
+                return true;
+            }
+            else return false;
+
         }
-    
+
+        internal bool ConfirmSearchPatientClick(string id)
+        {
+            int myId;
+            if (Int32.TryParse(id, out myId))
+            {
+                string sql = @"SELECT * FROM Patients WHERE Id = '" + myId + "'";
+                DataSet ds = DBManager.getDBConnectionInstance().getDataSet(sql);
+                if (Utility.CheckFind(ds))
+                {
+                    UIManager.Instance.activePatient = new Patient(ds);
+                    return true;
+                }
+                else return false;
+            }
+            else return false;
+
+        }
+
+        public bool ClickLogIn(string userName, string password)
+        {
+
+            string sql = @"SELECT * FROM Users WHERE Username = '" + userName + "'AND Password = '" + password + "'";
+            DataSet ds = DBManager.getDBConnectionInstance().getDataSet(sql);
+            if (Utility.CheckFind(ds))
+            {
+                UIManager.Instance.activeUser = new User(ds);
+                return true;
+            }
+            else return false;
+
+
+        }
+
+
+        #endregion
+
+        #region Events Methods
+
+        private void Form_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            CloseCancel(e);
+        }
+
         public void logOffBut_ClickUi(EventArgs e)
         {
             const string message = "Are you sure that you would like to log out?";
@@ -509,10 +602,11 @@ namespace WindowsFormsApplication2
 
             if (result == DialogResult.Yes)
             {
-                Instance.swapVisibility();
+                Utility.SwapVisibility();
                 activeUser = null;
                 activePatient = null;
                 chosenAppointment = null;
+                Utility.UpdateActivePatientLabels();
                 
                 
             }
@@ -539,99 +633,8 @@ namespace WindowsFormsApplication2
             }
         }
 
-        internal void showCalendar()
-        {
-            calendarForm = new Calendar();
-            calendarForm.ShowDialog();
-        }
+        #endregion
 
-        internal bool ConfirmSearchPatientClick(string name, string postcode, string dOb)
-        {
-            string sql = @"SELECT * FROM Patients WHERE PatientName = '" + name + "'AND Address = '" + postcode + "'AND dateOfBirth = '" + dOb + "'";
-            DataSet ds = DBManager.getDBConnectionInstance().getDataSet(sql);
-            if (Utility.CheckFind(ds))
-            {
-                UIManager.Instance.activePatient = new Patient(ds);
-                return true;
-            }
-            else return false;
-
-        }
-        
-        internal bool ConfirmSearchPatientClick(string id)
-        {
-            int myId;
-            if(Int32.TryParse(id, out myId))
-            {
-                string sql = @"SELECT * FROM Patients WHERE Id = '" + myId + "'";
-                DataSet ds = DBManager.getDBConnectionInstance().getDataSet(sql);
-                if (Utility.CheckFind(ds))
-                {
-                    UIManager.Instance.activePatient = new Patient(ds);
-                    return true;
-                }
-                else return false;
-            }
-            else return false;
-
-        }
-
-        public bool ClickLogIn(string userName, string password)
-        {
-            
-            string sql = @"SELECT * FROM Users WHERE Username = '" + userName + "'AND Password = '" + password +"'";
-            DataSet ds = DBManager.getDBConnectionInstance().getDataSet(sql);
-            if (Utility.CheckFind(ds))
-            {
-                UIManager.Instance.activeUser = new User(ds);
-                return true;
-            }
-            else return false;
-           
-             
-        }
-     
     }
-
-
-
-
-    public static class Utility
-    {
-        public static bool CheckFind(DataSet ds)
-        {
-
-            if (ds.Tables[0].Rows.Count == 1)
-            {
-                return true;
-            }
-            else if (ds.Tables[0].Rows.Count == 0)
-            {
-                return false;
-            }
-            else
-            {
-                Console.WriteLine("Multiple Entries with the same credentials");
-                Console.ReadLine();
-                return false;
-            }
-        }
-
-        public static void UpdateActivePatientLabels()
-        {
-            UIManager.Instance.MainForm.NameLabelText = UIManager.Instance.ActivePatient.PatientName;
-            UIManager.Instance.MainForm.AddressLabelTxt = UIManager.Instance.ActivePatient.PatientAddress;
-            UIManager.Instance.MainForm.DoBLabelTxt = UIManager.Instance.ActivePatient.PatientDateOfBirth;
-            UIManager.Instance.MainForm.IdLabelTxt = UIManager.Instance.ActivePatient.PatientId;
-            
-        }
-
-        internal static void UpdateSubmitButton()
-        {
-            if (UIManager.Instance.ActivePatient != null)
-            {
-                UIManager.Instance.BookAppointmentForm.SubmitButton.Enabled = true;
-            }
-        }
-    }
+    #endregion
 }

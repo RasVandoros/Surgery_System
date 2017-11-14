@@ -86,6 +86,7 @@
             this.datePicker.Size = new System.Drawing.Size(151, 20);
             this.datePicker.TabIndex = 8;
             this.datePicker.ValueChanged += new System.EventHandler(this.OnCalendarValueChanged);
+            this.datePicker.MouseCaptureChanged += new System.EventHandler(this.OnCalendarValueChanged);
             // 
             // time
             // 

@@ -66,6 +66,7 @@ namespace WindowsFormsApplication2
                         Utility.UpdateActivePatientLabels();
                         System.Windows.MessageBox.Show("Patient found.");
                         UIManager.Instance.UpdatePrescriptionsDataGrid();
+                        this.Close();
                     }
                     else
                     {
@@ -89,6 +90,7 @@ namespace WindowsFormsApplication2
                         Utility.UpdateActivePatientLabels();
                         System.Windows.MessageBox.Show("Patient found.");
                         UIManager.Instance.UpdatePrescriptionsDataGrid();
+                        this.Close();
                     }
                     else
                     {

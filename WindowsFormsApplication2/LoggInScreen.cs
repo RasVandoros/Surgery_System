@@ -41,7 +41,7 @@ namespace WindowsFormsApplication2
 
             if (UIManager.Instance.ClickLogIn(usernameTxtBox.Text, passwordTxtBox.Text) == true)
             {
-                UIManager.Instance.swapVisibility();
+                Utility.SwapVisibility();
                 passwordTxtBox.Text = "";
                 invalidTextBox.Visible = false;
             }
