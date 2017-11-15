@@ -44,6 +44,7 @@
             this.dobTxt = new System.Windows.Forms.Label();
             this.addressTxt = new System.Windows.Forms.Label();
             this.prescriptions = new System.Windows.Forms.DataGridView();
+            this.emptyActivePatButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.prescriptions)).BeginInit();
             this.SuspendLayout();
             // 
@@ -197,8 +198,18 @@
             this.prescriptions.Name = "prescriptions";
             this.prescriptions.Size = new System.Drawing.Size(427, 150);
             this.prescriptions.TabIndex = 49;
-            this.prescriptions.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.OnPrescriptionGridClick);
+            this.prescriptions.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.OnPrescriptionGridDoubleClick);
             this.prescriptions.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.OnPrescriptionsCellValueChanged);
+            // 
+            // emptyActivePatButton
+            // 
+            this.emptyActivePatButton.Location = new System.Drawing.Point(283, 60);
+            this.emptyActivePatButton.Name = "emptyActivePatButton";
+            this.emptyActivePatButton.Size = new System.Drawing.Size(23, 23);
+            this.emptyActivePatButton.TabIndex = 50;
+            this.emptyActivePatButton.Text = "X";
+            this.emptyActivePatButton.UseVisualStyleBackColor = true;
+            this.emptyActivePatButton.Click += new System.EventHandler(this.emptyActivePatButton_Click);
             // 
             // MainForm
             // 
@@ -207,6 +218,7 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(455, 495);
+            this.Controls.Add(this.emptyActivePatButton);
             this.Controls.Add(this.prescriptions);
             this.Controls.Add(this.addressTxt);
             this.Controls.Add(this.dobTxt);
@@ -250,6 +262,7 @@
         private System.Windows.Forms.Label dobTxt;
         private System.Windows.Forms.Label addressTxt;
         private System.Windows.Forms.DataGridView prescriptions;
+        private System.Windows.Forms.Button emptyActivePatButton;
     }
 }
 

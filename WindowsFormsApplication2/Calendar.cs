@@ -53,7 +53,7 @@ namespace WindowsFormsApplication2
             }
 
             myGrid.AutoResizeColumns();
-            myGrid.DataSource = UIManager.Instance.ProjectSelectedDateToCalendar(myCalendar.SelectionRange.Start.ToString("yyyy/MM/dd").Replace('/', '_')).Tables[0];
+            myGrid.DataSource = UIManager.Instance.CalendarDataset(myCalendar.SelectionRange.Start.ToString("yyyy/MM/dd").Replace('/', '_')).Tables[0];
             myGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             myGrid.Width = myGrid.Columns.Cast<DataGridViewColumn>().Sum(x => x.Width) + (myGrid.RowHeadersVisible ? myGrid.RowHeadersWidth : 0) + 3;
             this.Width = (int)(myGrid.Width * 1.5);
@@ -66,7 +66,7 @@ namespace WindowsFormsApplication2
 
         private void OnDateSelected(object sender, DateRangeEventArgs e)
         {
-            myGrid.DataSource = UIManager.Instance.ProjectSelectedDateToCalendar(myCalendar.SelectionRange.Start.ToString("yyyy_MM_dd")).Tables[0];
+            myGrid.DataSource = UIManager.Instance.CalendarDataset(myCalendar.SelectionRange.Start.ToString("yyyy_MM_dd")).Tables[0];
         }
 
         private void myGrid_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -92,7 +92,7 @@ namespace WindowsFormsApplication2
         {
 
             UIManager.Instance.DeleteAppointment();
-            myGrid.DataSource = UIManager.Instance.ProjectSelectedDateToCalendar(myCalendar.SelectionRange.Start.ToString("yyyy/MM/dd").Replace('/', '_')).Tables[0];
+            myGrid.DataSource = UIManager.Instance.CalendarDataset(myCalendar.SelectionRange.Start.ToString("yyyy/MM/dd").Replace('/', '_')).Tables[0];
             selectedAppointment.Text = "None";
         }
 

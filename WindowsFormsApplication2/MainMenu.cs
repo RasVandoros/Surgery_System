@@ -70,13 +70,12 @@ namespace WindowsFormsApplication2
 
         }
 
-
         #region Events
 
         private void MainMenu_Load(object sender, EventArgs e)
         {
 
-            this.MinimumSize = new System.Drawing.Size(this.Width + 50, this.Height + 50);
+            this.MinimumSize = new System.Drawing.Size(this.Width, this.Height);
             // no larger than screen size
             this.MaximumSize = new Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
             this.AutoSize = false;
@@ -101,18 +100,21 @@ namespace WindowsFormsApplication2
 
         }
 
-
+        private void emptyActivePatButton_Click(object sender, EventArgs e)
+        {
+            UIManager.Instance.ActivePatient = null;
+            UIManager.Instance.UpdatePrescriptionsDataGrid();
+            Utility.UpdateActivePatientLabels();
+        }
         private void logOffBut_Click(object sender, EventArgs e)
         {
             UIManager.Instance.logOffBut_ClickUi(e);
         }
 
-
         private void CalendarButton_Click(object sender, EventArgs e)
         {
             UIManager.Instance.showCalendar();
         }
-
 
         private void findPatient_Click(object sender, EventArgs e)
         {
@@ -130,13 +132,33 @@ namespace WindowsFormsApplication2
             UIManager.Instance.ShowRegisterNewUserForm();
         }
 
-        private void OnPrescriptionGridClick(object sender, DataGridViewCellEventArgs e)
+        private void OnPrescriptionGridDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+            
+
             int row = e.RowIndex;
+            int col = e.ColumnIndex;
             if (row >= 0)
             {
-                string selectedPatientMedID = prescriptions.Rows[row].Cells[0].Value.ToString();
+                if (col == 0)
+                {
+                    
+                    string selectedMedID = prescriptions.Rows[row].Cells[col].Value.ToString();
+                    string medName = UIManager.Instance.LoadMedNameAndNotes(selectedMedID).Tables[0].Rows[0][0].ToString();
+                    string notes = UIManager.Instance.LoadMedNameAndNotes(selectedMedID).Tables[0].Rows[0][1].ToString();
+                    string message = "Medication name: {0}" + medName + "{0}{0}Notes:{0}" + notes + ".";
+                    System.Windows.Forms.MessageBox.Show(string.Format(message, Environment.NewLine), "Medication Information");
 
+                }
+                else if (col == 1)
+                {
+                    string selectedPatId = prescriptions.Rows[row].Cells[col].Value.ToString();
+                    DataSet ds = UIManager.Instance.LoadPatient(selectedPatId);
+                    Patient mp = new Patient(ds);
+                    string message = "Patient name: " + mp.PatientName + "{0}Date of Birth: " + mp.PatientDateOfBirth + "{0}Address: " + mp.PatientAddress;
+                    System.Windows.Forms.MessageBox.Show(string.Format(message, Environment.NewLine), "Patient Information");
+
+                }
 
             }
         }
@@ -208,7 +230,9 @@ namespace WindowsFormsApplication2
 
 
         }
+        
         #endregion
+
     }
     #endregion
 

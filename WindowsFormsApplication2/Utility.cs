@@ -20,7 +20,6 @@ namespace WindowsFormsApplication2
                 this.Refresh(); 
             }
         }
-
         public int Month
         {
             get { return month; }
@@ -30,7 +29,6 @@ namespace WindowsFormsApplication2
                 this.Refresh();
             }
         }
-
         public int Day
         {
             get { return day; }
@@ -40,6 +38,7 @@ namespace WindowsFormsApplication2
                 this.Refresh();
             }
         }
+
 
 
         public Date(string time)
@@ -74,6 +73,57 @@ namespace WindowsFormsApplication2
                 this.month = month + 12;
                 this.year--;
             }
+        }
+
+        public override string ToString()
+        {
+            string result = "";
+            if (this.year < 1000)
+            {
+                if(this.year < 100)
+                {
+                    if(this.year < 10)
+                    {
+                        result += "000";   
+                    }
+                    else
+                    {
+                        result += "00";
+                    }
+                }
+                else
+                {
+                    result += "0";
+                }
+            }
+            result += year;
+            result += "_";
+
+            if (this.month < 10)
+            {
+                if (this.day < 10)
+                {
+                    result += String.Format("0{0}_0{1}", this.month, this.day);
+                }
+                else
+                {
+                    result += String.Format("0{0}_{1}", this.month, this.day);
+                }
+            }
+            else
+            {
+                if (this.day < 10)
+                {
+                    result += String.Format("{0}_0{1}", this.month, this.day);
+                }
+                else
+                {
+                    result += String.Format("{0}_{1}", this.month, this.day);
+                }
+            }
+
+            return result;
+
         }
     }
 
@@ -148,6 +198,35 @@ namespace WindowsFormsApplication2
             return timeDifference;
 
         }
+
+        public override string ToString()
+        {
+            string result = "";
+            if(this.hours < 10)
+            {
+                if (this.minutes < 10)
+                {
+                    result = String.Format("0{0}_0{1}", this.hours, this.minutes);
+                }
+                else
+                {
+                    result = String.Format("0{0}_{1}", this.hours, this.minutes);
+                }
+            }
+            else
+            {
+                if (this.minutes < 10)
+                {
+                    result = String.Format("{0}_0{1}", this.hours, this.minutes);
+                }
+                else
+                {
+                    result = String.Format("{0}_{1}", this.hours, this.minutes);
+                }
+            }
+            return result;
+
+        }
     }
 
     public static class Utility
@@ -214,8 +293,8 @@ namespace WindowsFormsApplication2
 
         public static void ConfirmPrescriptionAction(string medID, string patientId, string extendDate)
         {
-            string medName = UIManager.Instance.LoadNotes(medID).Tables[0].Rows[0][0].ToString();
-            string notes = UIManager.Instance.LoadNotes(medID).Tables[0].Rows[0][1].ToString();
+            string medName = UIManager.Instance.LoadMedNameAndNotes(medID).Tables[0].Rows[0][0].ToString();
+            string notes = UIManager.Instance.LoadMedNameAndNotes(medID).Tables[0].Rows[0][1].ToString();
             string message = "Notes:{0} " + notes + "{0}{0}{0}{0}Confirm and Authorise prescription extention?";
             DialogResult answer = MessageBox.Show(string.Format(message, Environment.NewLine), medName, MessageBoxButtons.YesNo);
             if (answer == DialogResult.Yes)

@@ -15,6 +15,7 @@ namespace WindowsFormsApplication2
         private string staffID;
         private string appointmentDate;
         private string appointmentTime;
+        private int duration;
         private Date date;
         private Time time;
 
@@ -53,7 +54,11 @@ namespace WindowsFormsApplication2
             get { return time; }
             set { time = value; }
         }
-
+        public int Duration
+        {
+            get { return duration; }
+            set { this.duration = value; }
+        }
 
         /// <summary>
         /// Normal Constructor
@@ -72,29 +77,33 @@ namespace WindowsFormsApplication2
             staffID = stID;
             time = new Time(appointmentTime);
             date = new Date(appointmentDate);
+            duration = 30;
         }
 
         /// <summary>
         /// This constructor is specifically used to generate the selected appointment object
         /// </summary>
         /// <param name="data"></param>
-        public Appointment(DataSet data)
+        public Appointment(DataSet data) //TO DO: Change the parameter to a datarow
         {
+            
             appointmentTime = data.Tables[0].Rows[0][2].ToString().Trim(' ');
             appointmentDate = data.Tables[0].Rows[0][1].ToString().Trim(' ');
             appointmentID = data.Tables[0].Rows[0][0].ToString().Trim(' ');
             patientID = data.Tables[0].Rows[0][4].ToString().Trim(' ');
             staffID = data.Tables[0].Rows[0][3].ToString().Trim(' ');
+            duration = Int32.Parse(data.Tables[0].Rows[0][5].ToString().Trim(' '));
+
             try
             {
+                duration = Int32.Parse(data.Tables[0].Rows[0][5].ToString().Trim(' '));
                 time = new Time(appointmentTime);
                 date = new Date(appointmentDate);
             }
             catch
             {
-                MessageBox.Show("Appointment date and time could not be parsed");
+                MessageBox.Show("Appointment date, time or duration could not be parsed");
             }
         }
-
     }
 }
