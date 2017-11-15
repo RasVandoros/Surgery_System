@@ -63,9 +63,9 @@ namespace WindowsFormsApplication2
                 {
                     if (UIManager.Instance.ConfirmSearchPatientClick(iDtextBox.Text))
                     {
-                        Utility.UpdateActivePatientLabels();
+                        //Utility.UpdateActivePatientLabels();
                         System.Windows.MessageBox.Show("Patient found.");
-                        UIManager.Instance.UpdatePrescriptionsDataGrid();
+                        //UIManager.Instance.UpdatePrescriptionsDataGrid();
                         this.Close();
                     }
                     else
@@ -87,9 +87,9 @@ namespace WindowsFormsApplication2
                 {
                     if (UIManager.Instance.ConfirmSearchPatientClick(nametextBox.Text, addresstextBox.Text, datePicker.Value.ToString("yyyy/MM/dd").Replace('/', '_')))
                     {
-                        Utility.UpdateActivePatientLabels();
+                        //Utility.UpdateActivePatientLabels();
                         System.Windows.MessageBox.Show("Patient found.");
-                        UIManager.Instance.UpdatePrescriptionsDataGrid();
+                        //UIManager.Instance.UpdatePrescriptionsDataGrid();
                         this.Close();
                     }
                     else

@@ -45,12 +45,16 @@
             this.addressTxt = new System.Windows.Forms.Label();
             this.prescriptions = new System.Windows.Forms.DataGridView();
             this.emptyActivePatButton = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.prescriptions)).BeginInit();
             this.SuspendLayout();
             // 
             // logOffBut
             // 
-            this.logOffBut.Location = new System.Drawing.Point(369, 460);
+            this.logOffBut.Location = new System.Drawing.Point(369, 462);
             this.logOffBut.Name = "logOffBut";
             this.logOffBut.Size = new System.Drawing.Size(70, 23);
             this.logOffBut.TabIndex = 0;
@@ -70,7 +74,7 @@
             // 
             // registerNewUserButton
             // 
-            this.registerNewUserButton.Location = new System.Drawing.Point(12, 460);
+            this.registerNewUserButton.Location = new System.Drawing.Point(12, 462);
             this.registerNewUserButton.Name = "registerNewUserButton";
             this.registerNewUserButton.Size = new System.Drawing.Size(106, 23);
             this.registerNewUserButton.TabIndex = 25;
@@ -90,7 +94,7 @@
             // 
             // findPatient
             // 
-            this.findPatient.Location = new System.Drawing.Point(257, 255);
+            this.findPatient.Location = new System.Drawing.Point(257, 210);
             this.findPatient.Name = "findPatient";
             this.findPatient.Size = new System.Drawing.Size(84, 23);
             this.findPatient.TabIndex = 27;
@@ -101,7 +105,7 @@
             // addressLabel
             // 
             this.addressLabel.AutoSize = true;
-            this.addressLabel.Location = new System.Drawing.Point(254, 220);
+            this.addressLabel.Location = new System.Drawing.Point(254, 166);
             this.addressLabel.Name = "addressLabel";
             this.addressLabel.Size = new System.Drawing.Size(45, 13);
             this.addressLabel.TabIndex = 31;
@@ -110,7 +114,7 @@
             // dobLabel
             // 
             this.dobLabel.AutoSize = true;
-            this.dobLabel.Location = new System.Drawing.Point(254, 179);
+            this.dobLabel.Location = new System.Drawing.Point(254, 140);
             this.dobLabel.Name = "dobLabel";
             this.dobLabel.Size = new System.Drawing.Size(65, 13);
             this.dobLabel.TabIndex = 30;
@@ -119,7 +123,7 @@
             // nameLabel
             // 
             this.nameLabel.AutoSize = true;
-            this.nameLabel.Location = new System.Drawing.Point(254, 140);
+            this.nameLabel.Location = new System.Drawing.Point(254, 113);
             this.nameLabel.Name = "nameLabel";
             this.nameLabel.Size = new System.Drawing.Size(35, 13);
             this.nameLabel.TabIndex = 29;
@@ -136,7 +140,7 @@
             // 
             // registerNewPatientButton
             // 
-            this.registerNewPatientButton.Location = new System.Drawing.Point(355, 255);
+            this.registerNewPatientButton.Location = new System.Drawing.Point(355, 210);
             this.registerNewPatientButton.Name = "registerNewPatientButton";
             this.registerNewPatientButton.Size = new System.Drawing.Size(84, 23);
             this.registerNewPatientButton.TabIndex = 38;
@@ -147,7 +151,7 @@
             // idLabel
             // 
             this.idLabel.AutoSize = true;
-            this.idLabel.Location = new System.Drawing.Point(254, 100);
+            this.idLabel.Location = new System.Drawing.Point(254, 89);
             this.idLabel.Name = "idLabel";
             this.idLabel.Size = new System.Drawing.Size(18, 13);
             this.idLabel.TabIndex = 43;
@@ -158,45 +162,41 @@
             this.idTxt.AutoSize = true;
             this.idTxt.Location = new System.Drawing.Point(382, 100);
             this.idTxt.Name = "idTxt";
-            this.idTxt.Size = new System.Drawing.Size(36, 13);
+            this.idTxt.Size = new System.Drawing.Size(0, 13);
             this.idTxt.TabIndex = 45;
-            this.idTxt.Text = "Empty";
             // 
             // nameTxt
             // 
             this.nameTxt.AutoSize = true;
             this.nameTxt.Location = new System.Drawing.Point(382, 140);
             this.nameTxt.Name = "nameTxt";
-            this.nameTxt.Size = new System.Drawing.Size(36, 13);
+            this.nameTxt.Size = new System.Drawing.Size(0, 13);
             this.nameTxt.TabIndex = 46;
-            this.nameTxt.Text = "Empty";
             // 
             // dobTxt
             // 
             this.dobTxt.AutoSize = true;
             this.dobTxt.Location = new System.Drawing.Point(382, 179);
             this.dobTxt.Name = "dobTxt";
-            this.dobTxt.Size = new System.Drawing.Size(36, 13);
+            this.dobTxt.Size = new System.Drawing.Size(0, 13);
             this.dobTxt.TabIndex = 47;
-            this.dobTxt.Text = "Empty";
             // 
             // addressTxt
             // 
             this.addressTxt.AutoSize = true;
             this.addressTxt.Location = new System.Drawing.Point(382, 220);
             this.addressTxt.Name = "addressTxt";
-            this.addressTxt.Size = new System.Drawing.Size(36, 13);
+            this.addressTxt.Size = new System.Drawing.Size(0, 13);
             this.addressTxt.TabIndex = 48;
-            this.addressTxt.Text = "Empty";
             // 
             // prescriptions
             // 
             this.prescriptions.AllowUserToAddRows = false;
             this.prescriptions.AllowUserToDeleteRows = false;
             this.prescriptions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.prescriptions.Location = new System.Drawing.Point(12, 293);
+            this.prescriptions.Location = new System.Drawing.Point(12, 249);
             this.prescriptions.Name = "prescriptions";
-            this.prescriptions.Size = new System.Drawing.Size(427, 150);
+            this.prescriptions.Size = new System.Drawing.Size(427, 157);
             this.prescriptions.TabIndex = 49;
             this.prescriptions.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.OnPrescriptionGridDoubleClick);
             this.prescriptions.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.OnPrescriptionsCellValueChanged);
@@ -211,6 +211,46 @@
             this.emptyActivePatButton.UseVisualStyleBackColor = true;
             this.emptyActivePatButton.Click += new System.EventHandler(this.emptyActivePatButton_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(12, 215);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(113, 18);
+            this.label1.TabIndex = 51;
+            this.label1.Text = "Prescriptions:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(13, 409);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(311, 13);
+            this.label2.TabIndex = 52;
+            this.label2.Text = "*Double Click on any of the IDs to get the full element information";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(12, 424);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(208, 13);
+            this.label3.TabIndex = 53;
+            this.label3.Text = "*Enable Patient filtering by finding a patient";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(12, 439);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(368, 13);
+            this.label4.TabIndex = 54;
+            this.label4.Text = "*Extend Prescriptions by pressing on the responding cell and altering the data";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -218,6 +258,10 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(455, 495);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.emptyActivePatButton);
             this.Controls.Add(this.prescriptions);
             this.Controls.Add(this.addressTxt);
@@ -263,6 +307,10 @@
         private System.Windows.Forms.Label addressTxt;
         private System.Windows.Forms.DataGridView prescriptions;
         private System.Windows.Forms.Button emptyActivePatButton;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
     }
 }
 

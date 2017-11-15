@@ -39,6 +39,8 @@
             this.findPatient = new System.Windows.Forms.Button();
             this.stffNameComboBox = new System.Windows.Forms.ComboBox();
             this.shiftsGrid = new System.Windows.Forms.DataGridView();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.shiftsGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -142,16 +144,38 @@
             // shiftsGrid
             // 
             this.shiftsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.shiftsGrid.Location = new System.Drawing.Point(392, 12);
+            this.shiftsGrid.Location = new System.Drawing.Point(392, 43);
             this.shiftsGrid.Name = "shiftsGrid";
-            this.shiftsGrid.Size = new System.Drawing.Size(375, 419);
+            this.shiftsGrid.Size = new System.Drawing.Size(375, 338);
             this.shiftsGrid.TabIndex = 15;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(389, 22);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(56, 18);
+            this.label1.TabIndex = 16;
+            this.label1.Text = "Shifts:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(390, 386);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(358, 13);
+            this.label2.TabIndex = 17;
+            this.label2.Text = "*The table shows all the shifts that cover the data and time selections made";
             // 
             // BookAppointmentForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(779, 443);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.shiftsGrid);
             this.Controls.Add(this.stffNameComboBox);
             this.Controls.Add(this.findPatient);
@@ -185,5 +209,7 @@
         private System.Windows.Forms.Button findPatient;
         private System.Windows.Forms.ComboBox stffNameComboBox;
         private System.Windows.Forms.DataGridView shiftsGrid;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }

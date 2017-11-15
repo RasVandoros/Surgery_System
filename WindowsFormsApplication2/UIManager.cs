@@ -96,7 +96,8 @@ namespace WindowsFormsApplication2
             set
             {
                 activePatient = value;
-
+                Utility.UpdateActivePatientLabels();
+                UIManager.Instance.UpdatePrescriptionsDataGrid();
             }
 
         }
@@ -160,9 +161,9 @@ namespace WindowsFormsApplication2
 
         internal void UpdatePrescriptionsDataGrid()
         {
-            if (activePatient != null)
+            if (ActivePatient != null)
             {
-                mainForm.PrescriptionsGrid.DataSource = LoadPrescriptions(activePatient.PatientId).Tables[0];
+                mainForm.PrescriptionsGrid.DataSource = LoadPrescriptions(ActivePatient.PatientId).Tables[0];
 
             }
             else
@@ -295,7 +296,7 @@ namespace WindowsFormsApplication2
         internal void SubmitAppointmentRequest()
         {
             string stffID = BookAppointmentForm.StffComboBox.SelectedItem.ToString();
-            string patientID = activePatient.PatientId;
+            string patientID = ActivePatient.PatientId;
             string appointmentDate = "";
             string appointmentTime = "";
 
@@ -340,7 +341,7 @@ namespace WindowsFormsApplication2
             DataSet ds = LoadPatient(name, postcode, dOb);
             if (Utility.CheckFind(ds))
             {
-                UIManager.Instance.activePatient = new Patient(ds);
+                UIManager.Instance.ActivePatient = new Patient(ds);
                 return true;
             }
             else return false;
@@ -355,7 +356,7 @@ namespace WindowsFormsApplication2
                 DataSet ds = UIManager.instance.LoadPatient(id);
                 if (Utility.CheckFind(ds))
                 {
-                    UIManager.Instance.activePatient = new Patient(ds);
+                    UIManager.Instance.ActivePatient = new Patient(ds);
                     return true;
                 }
                 else return false;
@@ -701,9 +702,9 @@ namespace WindowsFormsApplication2
             {
                 Utility.SwapVisibility();
                 activeUser = null;
-                activePatient = null;
+                ActivePatient = null;
                 chosenAppointment = null;
-                Utility.UpdateActivePatientLabels();
+                //Utility.UpdateActivePatientLabels();
                 
                 
             }

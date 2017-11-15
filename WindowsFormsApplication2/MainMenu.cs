@@ -103,8 +103,8 @@ namespace WindowsFormsApplication2
         private void emptyActivePatButton_Click(object sender, EventArgs e)
         {
             UIManager.Instance.ActivePatient = null;
-            UIManager.Instance.UpdatePrescriptionsDataGrid();
-            Utility.UpdateActivePatientLabels();
+            //UIManager.Instance.UpdatePrescriptionsDataGrid();
+            //Utility.UpdateActivePatientLabels();
         }
         private void logOffBut_Click(object sender, EventArgs e)
         {
@@ -230,9 +230,10 @@ namespace WindowsFormsApplication2
 
 
         }
-        
+
         #endregion
 
+        
     }
     #endregion
 

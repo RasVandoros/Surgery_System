@@ -39,6 +39,7 @@
             this.deleteButton = new System.Windows.Forms.Button();
             this.appointmentsBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.selApHeader = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.myGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.databaseDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.appointmentsBindingSource)).BeginInit();
@@ -58,11 +59,11 @@
             this.myGrid.AllowUserToAddRows = false;
             this.myGrid.AllowUserToDeleteRows = false;
             this.myGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.myGrid.Location = new System.Drawing.Point(22, 206);
+            this.myGrid.Location = new System.Drawing.Point(22, 229);
             this.myGrid.Name = "myGrid";
             this.myGrid.ReadOnly = true;
             this.myGrid.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.myGrid.Size = new System.Drawing.Size(443, 266);
+            this.myGrid.Size = new System.Drawing.Size(443, 243);
             this.myGrid.TabIndex = 2;
             this.myGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.myGrid_CellClick);
             // 
@@ -120,11 +121,22 @@
             this.selApHeader.TabIndex = 6;
             this.selApHeader.Text = "Selected Appointment";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(19, 208);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(147, 18);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Appointments List:";
+            // 
             // Calendar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(555, 512);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.selApHeader);
             this.Controls.Add(this.deleteButton);
             this.Controls.Add(this.bookAppointment);
@@ -155,5 +167,6 @@
         private System.Windows.Forms.Button deleteButton;
         private System.Windows.Forms.BindingSource appointmentsBindingSource1;
         private System.Windows.Forms.Label selApHeader;
+        private System.Windows.Forms.Label label1;
     }
 }
