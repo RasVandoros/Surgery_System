@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
-
+using System.IO;
 
 namespace WindowsFormsApplication2
 {
@@ -16,19 +16,50 @@ namespace WindowsFormsApplication2
     {
         #region Singleton
 
-        private static readonly UIManager instance = new UIManager();
-        static UIManager()
+        static UIManager instance = null;
+        static readonly object myLock = new object();
+        private int id;
+        
+        UIManager()
         {
+            try
+            {
+                string curFile = "";
+                id = 0;
+                do
+                {
+                    id++;
+                    curFile = string.Format(String.IsNullOrEmpty(id.ToString()) ? "{0}.log" : "{0}_{1}.log", DateTime.Now.ToString("yyyy_MM_dd"), id);
+                }
+                while (File.Exists(curFile));
+                Logger.LogName = curFile;
+                String s = null;
+                string ass = s.Substring(3);
+
+            }
+            catch(Exception e)
+            {
+                string message = new Message(e, "Error while searching for the run ID, inside the constructor").message;
+                Logger.Instance.WriteLog(Logger.Type.Exception, message, null);
+            }
         }
-        private UIManager()
-        {
-        }
+        
         public static UIManager Instance
         {
             get
             {
+                lock (myLock)
+                {
+                    if (instance == null)
+                    {
+                        instance = new UIManager();
+                        
+                    }
+                }
                 return instance;
             }
+
+            
         }
 
         #endregion
@@ -688,6 +719,7 @@ namespace WindowsFormsApplication2
         private void Form_FormClosing(object sender, FormClosingEventArgs e)
         {
             CloseCancel(e);
+            Logger.Instance.WriteLog(Logger.Type.Flow, "Form Was closed", id.ToString());
         }
 
         public void logOffBut_ClickUi(EventArgs e)

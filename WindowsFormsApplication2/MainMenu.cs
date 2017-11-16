@@ -97,6 +97,7 @@ namespace WindowsFormsApplication2
                 c.ReadOnly = true;
             }
             prescriptions.Columns[4].ReadOnly = false;
+            
 
         }
 

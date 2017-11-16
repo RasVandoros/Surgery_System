@@ -81,6 +81,7 @@
     <Compile Include="FindPatient.Designer.cs">
       <DependentUpon>FindPatient.cs</DependentUpon>
     </Compile>
+    <Compile Include="Logger.cs" />
     <Compile Include="MainMenu.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -229,6 +229,21 @@ namespace WindowsFormsApplication2
         }
     }
 
+    public struct Message
+    {
+        public string message;
+
+        public Message(Exception e, string info)
+        {
+            message = String.Format("{0} {1} Exception information:{1}Target Site: {2}{1}Message:: {3}", info, Environment.NewLine, e.TargetSite, e.Message);
+        }
+
+        public Message(Exception e)
+        {
+            message = String.Format("Exception information:{1}Target Site: {2}{1}Message:: {3}", Environment.NewLine, e.TargetSite, e.Message);
+        }
+    }
+
     public static class Utility
     {
         public static void SwapVisibility()
@@ -303,5 +318,7 @@ namespace WindowsFormsApplication2
             }
 
         }
+
+       
     }
 }
