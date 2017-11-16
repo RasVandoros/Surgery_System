@@ -33,14 +33,11 @@ namespace WindowsFormsApplication2
                 }
                 while (File.Exists(curFile));
                 Logger.LogName = curFile;
-                String s = null;
-                string ass = s.Substring(3);
 
             }
             catch(Exception e)
             {
-                string message = new Message(e, "Error while searching for the run ID, inside the constructor").message;
-                Logger.Instance.WriteLog(Logger.Type.Exception, message, null);
+                Logger.Instance.WriteLog(Logger.Type.Exception, new Message(e, "Error while searching for the run ID, inside the constructor"), null);
             }
         }
         
@@ -719,7 +716,7 @@ namespace WindowsFormsApplication2
         private void Form_FormClosing(object sender, FormClosingEventArgs e)
         {
             CloseCancel(e);
-            Logger.Instance.WriteLog(Logger.Type.Flow, "Form Was closed", id.ToString());
+            Logger.Instance.WriteLog(Logger.Type.Flow, new Message("Form Was closed"), id.ToString());
         }
 
         public void logOffBut_ClickUi(EventArgs e)

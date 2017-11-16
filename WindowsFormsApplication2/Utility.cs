@@ -242,6 +242,11 @@ namespace WindowsFormsApplication2
         {
             message = String.Format("Exception information:{1}Target Site: {2}{1}Message:: {3}", Environment.NewLine, e.TargetSite, e.Message);
         }
+
+        public Message(string info)
+        {
+            message = info;
+        }
     }
 
     public static class Utility
