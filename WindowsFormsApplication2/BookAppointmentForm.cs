@@ -111,6 +111,8 @@ namespace WindowsFormsApplication2
             {
                 submitButton.Enabled = true;
             }
+            Logger.Instance.WriteLog(Logger.Type.Flow, new Message("Find Patient button click"), UIManager.Instance.ID.ToString());
+
         }
 
         private void OnComboBoxClick(object sender, EventArgs e)
@@ -126,6 +128,8 @@ namespace WindowsFormsApplication2
                     UIManager.Instance.BookAppointmentForm.StffComboBox.Items.Add(id.ToString());
                 }
             }
+            Logger.Instance.WriteLog(Logger.Type.Flow, new Message("Combo box click"), UIManager.Instance.ID.ToString());
+
 
         }
 
@@ -148,6 +152,8 @@ namespace WindowsFormsApplication2
         private void submitButton_Click(object sender, EventArgs e)
         {
             UIManager.Instance.SubmitAppointmentRequest();
+            Logger.Instance.WriteLog(Logger.Type.Flow, new Message("Appointment request submited successfully"), UIManager.Instance.ID.ToString());
+
         }
     }
 }

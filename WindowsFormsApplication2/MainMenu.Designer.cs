@@ -94,7 +94,7 @@
             // 
             // findPatient
             // 
-            this.findPatient.Location = new System.Drawing.Point(257, 210);
+            this.findPatient.Location = new System.Drawing.Point(345, 210);
             this.findPatient.Name = "findPatient";
             this.findPatient.Size = new System.Drawing.Size(84, 23);
             this.findPatient.TabIndex = 27;
@@ -140,7 +140,7 @@
             // 
             // registerNewPatientButton
             // 
-            this.registerNewPatientButton.Location = new System.Drawing.Point(113, 179);
+            this.registerNewPatientButton.Location = new System.Drawing.Point(222, 210);
             this.registerNewPatientButton.Name = "registerNewPatientButton";
             this.registerNewPatientButton.Size = new System.Drawing.Size(84, 23);
             this.registerNewPatientButton.TabIndex = 38;

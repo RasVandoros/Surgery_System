@@ -220,16 +220,11 @@ namespace WindowsFormsApplication2
             }
         }
 
-        public static int operator -(Time t1, Time t2)
+        public static int operator -(Time t1, Time t2)// substracting to to Time objects returns the time difference in minutes
         {
 
             Time t3 = new Time("00_00");
-            if (t2.length > t1.length)
-            {
-                Time t4 = t1;
-                t1 = t2;
-                t2 = t4;
-            }
+           
             t3.Minutes = t1.Minutes - t2.Minutes;
             t3.Hours += t1.Hours - t2.Hours;
             int timeDifference = t3.Hours * 60 + t3.Minutes;
@@ -243,7 +238,10 @@ namespace WindowsFormsApplication2
             t1.Minutes += min;
             return t1;
 
-        }
+        }/// <summary>
+        /// adding Time with int returns the Time after min number on minutes
+        /// </summary>
+        /// <returns></returns>
 
         public override string ToString()
         {
@@ -272,32 +270,32 @@ namespace WindowsFormsApplication2
             }
             return result;
 
-        }
+        }// overide for ToString() to allow for correct string transformations of the Time struct
     }
 
-    public struct Message
+    public struct Message// used by the logger class, basically to make string formating easier
     {
         public string message;
 
         public Message(Exception e, string info)
         {
-            message = String.Format("{0}{1}Exception information:{1}Target Site: {2}{1}Message: {3}{1}{1}", info, Environment.NewLine, e.TargetSite, e.Message);
+            message = String.Format("{0}{1}Exception information:{1}Target Site: {2}{1}Message: {3}", info, Environment.NewLine, e.TargetSite, e.Message);
         }
 
         public Message(Exception e)
         {
-            message = String.Format("Exception information:{1}Target Site: {2}{1}Message: {3}{1}{1}", Environment.NewLine, e.TargetSite, e.Message);
+            message = String.Format("Exception information:{1}Target Site: {2}{1}Message: {3}", Environment.NewLine, e.TargetSite, e.Message);
         }
 
         public Message(string info)
         {
-            message = String.Format("{0}{1}{1}", info, Environment.NewLine);
+            message = String.Format("{0}", info, Environment.NewLine);
         }
     }
 
     public static class Utility
     {
-        public static void SwapVisibility()
+        public static void SwapVisibility()//swaps the visibility between Logg in screen and the main form
         {
             if (UIManager.Instance.MyLogginScreen.Visible == true)
             {
@@ -312,26 +310,20 @@ namespace WindowsFormsApplication2
             }
         }
 
-        public static bool CheckFind(DataSet ds)
+        public static bool CheckFind(DataSet ds)// checks if a dataset contains specifically 1 row
         {
 
             if (ds.Tables[0].Rows.Count == 1)
             {
                 return true;
             }
-            else if (ds.Tables[0].Rows.Count == 0)
-            {
-                return false;
-            }
             else
             {
-                Console.WriteLine("Multiple Entries with the same credentials");
-                Console.ReadLine();
                 return false;
             }
         }
 
-        public static void UpdateActivePatientLabels()
+        public static void UpdateActivePatientLabels()//Updates the labels for the active patient, according to the UIManager property
         {
             if (UIManager.Instance.ActivePatient != null)
             {
@@ -349,18 +341,20 @@ namespace WindowsFormsApplication2
             }
         }
 
-        internal static void UpdateSubmitButton()
+        internal static void UpdateSubmitButton()//Updates the submit button in the book appointment form
         {
             if (UIManager.Instance.ActivePatient != null)
             {
-                UIManager.Instance.BookAppointmentForm.SubmitButton.Enabled = true;
+                UIManager.Instance.BookAppointmentForm.SubmitButton.Enabled = true;// by checking if a patient is selected. 
+
             }
         }
 
-        public static void ConfirmPrescriptionAction(string medID, string patientId, string extendDate)
+        public static void ConfirmPrescriptionAction(string medID, string patientId, string extendDate)//Asks for confirmation for the extention request by showing the notes
         {
-            string medName = UIManager.Instance.LoadMedNameAndNotes(medID).Tables[0].Rows[0][0].ToString();
-            string notes = UIManager.Instance.LoadMedNameAndNotes(medID).Tables[0].Rows[0][1].ToString();
+            DataSet ds = UIManager.Instance.LoadMedNameAndNotes(medID);
+            string medName = ds.Tables[0].Rows[0][0].ToString();
+            string notes = ds.Tables[0].Rows[0][1].ToString();
             string message = "Notes:{0} " + notes + "{0}{0}{0}{0}Confirm and Authorise prescription extention?";
             DialogResult answer = MessageBox.Show(string.Format(message, Environment.NewLine), medName, MessageBoxButtons.YesNo);
             if (answer == DialogResult.Yes)

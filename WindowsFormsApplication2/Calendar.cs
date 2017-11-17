@@ -44,8 +44,11 @@ namespace WindowsFormsApplication2
                 selectedAppointment.Text += "Appointment Date: " + UIManager.Instance.ChosenAppointment.AppointmentDate + "\n";
                 selectedAppointment.Text += "Patient ID: " + UIManager.Instance.ChosenAppointment.PatientID + "\n";
                 selectedAppointment.Text += "Staff Member ID: " + UIManager.Instance.ChosenAppointment.StaffID;
+
+                Logger.Instance.WriteLog(Logger.Type.Flow, new Message("Selected appointment text update to: " + selectedAppointment.Text), UIManager.Instance.ID.ToString());
+
             }
-            
+
 
             foreach (Control c in this.Controls)
             {
@@ -84,8 +87,11 @@ namespace WindowsFormsApplication2
                 selectedAppointment.Text += "Appointment Date: " + UIManager.Instance.ChosenAppointment.AppointmentDate + "\n";
                 selectedAppointment.Text += "Patient ID: " + UIManager.Instance.ChosenAppointment.PatientID + "\n";
                 selectedAppointment.Text += "Staff Member ID: " + UIManager.Instance.ChosenAppointment.StaffID;
+
+                Logger.Instance.WriteLog(Logger.Type.Flow, new Message("Selected appointment text update to: " + selectedAppointment.Text), UIManager.Instance.ID.ToString());
+
             }
-            
+
         }
 
         private void deleteButton_Click(object sender, EventArgs e)
@@ -94,6 +100,9 @@ namespace WindowsFormsApplication2
             UIManager.Instance.DeleteAppointment();
             myGrid.DataSource = UIManager.Instance.CalendarDataset(myCalendar.SelectionRange.Start.ToString("yyyy/MM/dd").Replace('/', '_')).Tables[0];
             selectedAppointment.Text = "None";
+
+            Logger.Instance.WriteLog(Logger.Type.Flow, new Message("Deleted selected appointment"), UIManager.Instance.ID.ToString());
+
         }
 
         private void bookAppointment_Click(object sender, EventArgs e)

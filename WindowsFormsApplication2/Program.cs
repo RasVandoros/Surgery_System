@@ -24,8 +24,12 @@ namespace WindowsFormsApplication2
         [STAThread]
         static void Main()
         {
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            Logger.Instance.WriteLog(Logger.Type.Flow, new Message("Entry point"), UIManager.Instance.ID.ToString());
+
             UIManager.Instance.CallLoginScreen();
             
         }
