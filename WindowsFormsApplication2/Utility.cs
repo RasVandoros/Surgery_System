@@ -10,6 +10,19 @@ namespace WindowsFormsApplication2
         private int year;
         private int month;
         private int day;
+        private int raw;
+
+
+        public int Raw
+        {
+            get { return raw; }
+            set
+            {
+                raw = value;
+
+            }
+        }
+
 
         public int Year
         {
@@ -43,9 +56,10 @@ namespace WindowsFormsApplication2
 
         public Date(string time)
         {
-            year = DateTime.ParseExact(time, "yyyy_MM_dd", CultureInfo.InvariantCulture).Year;
-            month = DateTime.ParseExact(time, "yyyy_MM_dd", CultureInfo.InvariantCulture).Month;
-            day = DateTime.ParseExact(time, "yyyy_MM_dd", CultureInfo.InvariantCulture).Day;
+            year = DateTime.ParseExact(time.Trim(' '), "yyyy_MM_dd", CultureInfo.InvariantCulture).Year;
+            month = DateTime.ParseExact(time.Trim(' '), "yyyy_MM_dd", CultureInfo.InvariantCulture).Month;
+            day = DateTime.ParseExact(time.Trim(' '), "yyyy_MM_dd", CultureInfo.InvariantCulture).Day;
+            raw = year * 10000 + month * 100 + day;
         }
 
         
@@ -149,15 +163,39 @@ namespace WindowsFormsApplication2
             }
         }
 
+        public int Raw
+        {
+            get { return raw; }
+            set
+            {
+                raw = value;
+                
+            }
+        }
+
+        public int Length
+        {
+            get { return length; }
+            set
+            {
+                length = value;
+
+            }
+        }
+
+
         private int hours;
         private int minutes;
         private int length;
+        private int raw;
 
         public Time(string time)
         {
-            hours = DateTime.ParseExact(time, "HH_mm", CultureInfo.InvariantCulture).Hour;
-            minutes = DateTime.ParseExact(time, "HH_mm", CultureInfo.InvariantCulture).Minute;
+            
+            hours = DateTime.ParseExact(time.Trim(' '), "HH_mm", CultureInfo.InvariantCulture).Hour;
+            minutes = DateTime.ParseExact(time.Trim(' '), "HH_mm", CultureInfo.InvariantCulture).Minute;
             length = hours * 60 + minutes;
+            raw = hours * 100 + minutes;
         }
 
         private void Refresh()
@@ -199,6 +237,14 @@ namespace WindowsFormsApplication2
 
         }
 
+        public static Time operator +(Time t1, int min)
+        {
+
+            t1.Minutes += min;
+            return t1;
+
+        }
+
         public override string ToString()
         {
             string result = "";
@@ -235,17 +281,17 @@ namespace WindowsFormsApplication2
 
         public Message(Exception e, string info)
         {
-            message = String.Format("{0} {1} Exception information:{1}Target Site: {2}{1}Message:: {3}", info, Environment.NewLine, e.TargetSite, e.Message);
+            message = String.Format("{0}{1}Exception information:{1}Target Site: {2}{1}Message: {3}{1}{1}", info, Environment.NewLine, e.TargetSite, e.Message);
         }
 
         public Message(Exception e)
         {
-            message = String.Format("Exception information:{1}Target Site: {2}{1}Message:: {3}", Environment.NewLine, e.TargetSite, e.Message);
+            message = String.Format("Exception information:{1}Target Site: {2}{1}Message: {3}{1}{1}", Environment.NewLine, e.TargetSite, e.Message);
         }
 
         public Message(string info)
         {
-            message = info;
+            message = String.Format("{0}{1}{1}", info, Environment.NewLine);
         }
     }
 

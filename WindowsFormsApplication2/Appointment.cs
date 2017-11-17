@@ -10,6 +10,7 @@ namespace WindowsFormsApplication2
 {
     public class Appointment
     {
+        #region attributes and properties
         private string appointmentID;
         private string patientID;
         private string staffID;
@@ -60,6 +61,8 @@ namespace WindowsFormsApplication2
             set { this.duration = value; }
         }
 
+        #endregion
+
         /// <summary>
         /// Normal Constructor
         /// </summary>
@@ -68,23 +71,24 @@ namespace WindowsFormsApplication2
         /// <param name="stID"></param>
         /// <param name="apDate"></param>
         /// <param name="apTime"></param>
-        public Appointment(string apID, string pID, string stID, string apDate, string apTime)
+        public Appointment(string pID, string stID, string apDate, string apTime)
         {
             appointmentTime = apTime;
             appointmentDate = apDate;
-            appointmentID = apID;
+            appointmentID = "";
             patientID = pID;
             staffID = stID;
             time = new Time(appointmentTime);
             date = new Date(appointmentDate);
             duration = 30;
+            Logger.Instance.WriteLog(Logger.Type.Flow, new Message("Appointment object created"), UIManager.Instance.ID.ToString());
         }
 
         /// <summary>
         /// This constructor is specifically used to generate the selected appointment object
         /// </summary>
         /// <param name="data"></param>
-        public Appointment(DataSet data) //TO DO: Change the parameter to a datarow
+        public Appointment(DataSet data) //this is probably useless at this point. Need to update the software to always work with the other constructor
         {
             
             appointmentTime = data.Tables[0].Rows[0][2].ToString().Trim(' ');
@@ -92,11 +96,32 @@ namespace WindowsFormsApplication2
             appointmentID = data.Tables[0].Rows[0][0].ToString().Trim(' ');
             patientID = data.Tables[0].Rows[0][4].ToString().Trim(' ');
             staffID = data.Tables[0].Rows[0][3].ToString().Trim(' ');
-            duration = Int32.Parse(data.Tables[0].Rows[0][5].ToString().Trim(' '));
 
             try
             {
                 duration = Int32.Parse(data.Tables[0].Rows[0][5].ToString().Trim(' '));
+                time = new Time(appointmentTime);
+                date = new Date(appointmentDate);
+            }
+            catch
+            {
+                MessageBox.Show("Appointment date, time or duration could not be parsed");
+            }
+        }
+
+        public Appointment(DataRow datarow)
+        {
+            
+
+            appointmentTime = datarow[2].ToString().Trim(' ');
+            appointmentDate = datarow[1].ToString().Trim(' ');
+            appointmentID = datarow[0].ToString().Trim(' ');
+            patientID = datarow[4].ToString().Trim(' ');
+            staffID = datarow[3].ToString().Trim(' ');
+
+            try
+            {
+                duration = Int32.Parse(datarow[5].ToString().Trim(' '));
                 time = new Time(appointmentTime);
                 date = new Date(appointmentDate);
             }

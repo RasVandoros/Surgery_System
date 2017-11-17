@@ -132,7 +132,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(312, 65);
+            this.label5.Location = new System.Drawing.Point(312, 60);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(43, 13);
             this.label5.TabIndex = 28;
@@ -140,7 +140,7 @@
             // 
             // registerNewPatientButton
             // 
-            this.registerNewPatientButton.Location = new System.Drawing.Point(355, 210);
+            this.registerNewPatientButton.Location = new System.Drawing.Point(113, 179);
             this.registerNewPatientButton.Name = "registerNewPatientButton";
             this.registerNewPatientButton.Size = new System.Drawing.Size(84, 23);
             this.registerNewPatientButton.TabIndex = 38;
@@ -160,34 +160,38 @@
             // idTxt
             // 
             this.idTxt.AutoSize = true;
-            this.idTxt.Location = new System.Drawing.Point(382, 100);
+            this.idTxt.Location = new System.Drawing.Point(360, 89);
             this.idTxt.Name = "idTxt";
-            this.idTxt.Size = new System.Drawing.Size(0, 13);
+            this.idTxt.Size = new System.Drawing.Size(36, 13);
             this.idTxt.TabIndex = 45;
+            this.idTxt.Text = "Empty";
             // 
             // nameTxt
             // 
             this.nameTxt.AutoSize = true;
-            this.nameTxt.Location = new System.Drawing.Point(382, 140);
+            this.nameTxt.Location = new System.Drawing.Point(360, 140);
             this.nameTxt.Name = "nameTxt";
-            this.nameTxt.Size = new System.Drawing.Size(0, 13);
+            this.nameTxt.Size = new System.Drawing.Size(36, 13);
             this.nameTxt.TabIndex = 46;
+            this.nameTxt.Text = "Empty";
             // 
             // dobTxt
             // 
             this.dobTxt.AutoSize = true;
-            this.dobTxt.Location = new System.Drawing.Point(382, 179);
+            this.dobTxt.Location = new System.Drawing.Point(360, 113);
             this.dobTxt.Name = "dobTxt";
-            this.dobTxt.Size = new System.Drawing.Size(0, 13);
+            this.dobTxt.Size = new System.Drawing.Size(36, 13);
             this.dobTxt.TabIndex = 47;
+            this.dobTxt.Text = "Empty";
             // 
             // addressTxt
             // 
             this.addressTxt.AutoSize = true;
-            this.addressTxt.Location = new System.Drawing.Point(382, 220);
+            this.addressTxt.Location = new System.Drawing.Point(360, 166);
             this.addressTxt.Name = "addressTxt";
-            this.addressTxt.Size = new System.Drawing.Size(0, 13);
+            this.addressTxt.Size = new System.Drawing.Size(36, 13);
             this.addressTxt.TabIndex = 48;
+            this.addressTxt.Text = "Empty";
             // 
             // prescriptions
             // 
@@ -203,7 +207,7 @@
             // 
             // emptyActivePatButton
             // 
-            this.emptyActivePatButton.Location = new System.Drawing.Point(283, 60);
+            this.emptyActivePatButton.Location = new System.Drawing.Point(283, 55);
             this.emptyActivePatButton.Name = "emptyActivePatButton";
             this.emptyActivePatButton.Size = new System.Drawing.Size(23, 23);
             this.emptyActivePatButton.TabIndex = 50;

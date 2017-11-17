@@ -77,7 +77,13 @@ namespace WindowsFormsApplication2
         #endregion
 
         #region Properties
-
+        public int ID
+        {
+            get
+            {
+                return id;
+            }
+        }
         public LoggInScreen MyLogginScreen
         {
             get { return myLoggInScreen; }
@@ -224,7 +230,7 @@ namespace WindowsFormsApplication2
             {
                 if (bookAppointmentForm.TimePicker.Checked) //only time checked
                 {
-                    ds = UIManager.instance.LoadShifts(selectedDate);
+                    ds = UIManager.instance.LoadShiftsIdByTime(selectedTIme);
                 }
                 else //none checked
                 {
@@ -333,7 +339,7 @@ namespace WindowsFormsApplication2
                 if (BookAppointmentForm.TimePicker.Checked == true)//both
                 {
                     appointmentDate = BookAppointmentForm.DatePicker.Value.ToString("yyyy_MM_dd");
-                    appointmentTime = BookAppointmentForm.TimePicker.Value.ToString("HH:mm");
+                    appointmentTime = BookAppointmentForm.TimePicker.Value.ToString("HH_mm");
                     InsertFull(appointmentDate, appointmentTime, stffID, patientID);
 
                     MessageBox.Show("Appointment booked successfully!");
@@ -341,16 +347,187 @@ namespace WindowsFormsApplication2
                 }
                 else//only date
                 {
-
-                    appointmentDate = BookAppointmentForm.DatePicker.Value.ToString("yyyy_MM_dd");
-
+                    OnlyDateInsert(stffID);
                 }
             }
             else//only time
             {
-                appointmentTime = BookAppointmentForm.TimePicker.Value.ToString("HH:mm");
+                OnlyTimeInsert(stffID);
             }
         }
+
+        
+        private void OnlyTimeInsert(string stffID)
+        {
+            Date appointmentDate = new Date(DateTime.Now.ToString("yyyy_MM_dd"));
+            Time appointmentTime = new Time(BookAppointmentForm.TimePicker.Value.ToString("HH_mm"));
+            int  counter = 0;
+            bool found = false;
+            Appointment newAppointment = null;
+            List<Appointment> temp = new List<Appointment>();
+            DataSet ds = new DataSet();
+            
+
+
+        
+            do
+            {
+
+                ds = LoadAppointment(appointmentDate, appointmentTime, stffID);
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    appointmentDate.Day = appointmentDate.Day + 1;
+                }
+                else
+                {
+                    
+                    counter = 15;
+                    found = true;
+                }
+
+            }
+            while (counter < 15);
+            if (found == false)
+            {
+                MessageBox.Show("Chosen day is completelly booked");
+            }
+            else
+            {
+                DialogResult dl = MessageBox.Show(String.Format
+                    ("You have not selected a time, therefore you appointment will be booked for the first available day, which is:{0}{1}.",
+                            Environment.NewLine, appointmentDate.ToString()), "Attention!", MessageBoxButtons.YesNo);
+                if (dl == DialogResult.Yes)
+                {
+                    try
+                    {
+                        InsertFull(appointmentDate.ToString(), appointmentTime.ToString(), stffID, activePatient.PatientId);
+                        MessageBox.Show("Appointment booked successfully!");
+                        Form.ActiveForm.Close();
+
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.Instance.WriteLog(Logger.Type.Exception, new Message(e, "Trying to find appointment slot, and save it to the db."), UIManager.Instance.id.ToString());
+                        throw;
+                    }
+                }
+                else
+                {
+                    Form.ActiveForm.Close();
+                }
+            }
+        }
+
+        private void OnlyDateInsert(string stffID) 
+        {
+            string appointmentDate = BookAppointmentForm.DatePicker.Value.ToString("yyyy_MM_dd");
+            string appointmentTime = "";
+            
+            Appointment newAppointment = null;
+            bool check = false;
+            List<Appointment> temp = new List<Appointment>();
+            Date reqDate = new Date(appointmentDate);
+            Time nowTime = new Time(DateTime.Now.ToString("HH_mm"));
+
+            Date nowDate = new Date(DateTime.Now.ToString("yyyy_MM_dd"));
+            DataSet shiftDs = LoadShifts(reqDate ,stffID);
+            Time startLook = new Time(shiftDs.Tables[0].Rows[0][2].ToString());
+            Time endLook = new Time(shiftDs.Tables[0].Rows[0][3].ToString());
+
+            if(nowDate.ToString() == reqDate.ToString())
+            {
+                startLook = nowTime;
+            }
+
+            DataSet appointmentsDs = LoadAppointment(new Date(appointmentDate), stffID);
+            if (appointmentsDs.Tables[0].Rows.Count > 0)
+            {
+                
+                foreach (DataRow dr in appointmentsDs.Tables[0].Rows)
+                {
+                    temp.Add(new Appointment(dr));
+                }
+                temp.OrderBy(x => x.Time.Raw);
+                
+                for (int i = 0; i < temp.Count; i++)
+                {
+
+                    if (i == 0)
+                    {
+                        int mydif = temp[i].Time - startLook;
+                        if (mydif >= 30)//we just need to fit the new appointment
+                        {
+                            appointmentTime = startLook.ToString();
+                            newAppointment = new Appointment(activePatient.PatientId, stffID, appointmentDate, appointmentTime);
+                            check = true;
+                            i = temp.Count;
+                        }
+                    }
+
+                    else if (i == temp.Count)
+                    {
+                        int mydif = endLook - temp[i].Time;
+                        if (mydif >= 60)//we need to fit the appointment at temp[i].Time and the new one
+                        {
+                            appointmentTime = (temp[i].Time + (int)30).ToString();
+                            newAppointment = new Appointment(activePatient.PatientId, stffID, appointmentDate, appointmentTime);
+                            check = true;
+
+                        }
+                    }
+
+                    else
+                    {
+                        int dif = temp[i + 1].Time - temp[i].Time;
+                        if (dif >= 60)//30+30 in to fit both the new appointment and the one that has a start time at at tem[i].Time
+                        {
+                            appointmentTime = (temp[i].Time + (int)30).ToString();
+                            newAppointment = new Appointment(activePatient.PatientId, stffID, appointmentDate, appointmentTime);
+                            check = true;
+                            i = temp.Count;
+                        }
+                    } 
+                }
+            }
+            else
+            {
+                InsertFull(appointmentDate, startLook.ToString(), stffID, activePatient.PatientId);
+                check = true;
+            }
+
+            if (check == false)
+            {
+                MessageBox.Show("Chosen day is completelly booked");
+            }
+            else
+            {
+                DialogResult dl = MessageBox.Show(String.Format
+                    ("You have not selected a time, therefore you appointment will be booked for the first available timeslot, which is:{0}{1}.",
+                            Environment.NewLine, appointmentTime), "Attention!", MessageBoxButtons.YesNo);
+                if (dl == DialogResult.Yes)
+                {
+                    try
+                    {
+                        InsertFull(appointmentDate, newAppointment.AppointmentTime, stffID, activePatient.PatientId);
+                        MessageBox.Show("Appointment booked successfully!");
+                        Form.ActiveForm.Close();
+
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.Instance.WriteLog(Logger.Type.Exception, new Message(e, "Trying to find appointment slot, and save it to the db."), UIManager.Instance.id.ToString());
+                        throw;
+                    }
+                }
+                else
+                {
+                    Form.ActiveForm.Close();
+                }
+            }
+
+        }
+    
+
 
         internal void showFindPatientForm()
         {
@@ -547,6 +724,9 @@ namespace WindowsFormsApplication2
            
 
 
+
+
+
         private DataSet LoadShiftsIdDistinct ()
         {
             string sql = @"SELECT DISTINCT StaffID FROM Shifts";
@@ -554,6 +734,11 @@ namespace WindowsFormsApplication2
             return DBManager.getDBConnectionInstance().getDataSet(sql);
 
         }
+
+
+
+
+
 
         public DataSet LoadShiftsIdByDate(string selectedDate)
         {
@@ -581,11 +766,22 @@ namespace WindowsFormsApplication2
             t.Minutes -= 58;
             string selectedTimeMinusDuration = t.ToString();
 
-            string sql = @"SELECT StaffID FROM Shifts WHERE Date = '" + selectedDate + "' AND StartTime <=  '" + selectedTime + "' AND FinishTime >= '" + selectedTimePlusDuration + "' EXCEPT SELECT StaffID FROM Appointments WHERE AppointmentDate = '" + selectedDate + "'AND AppointmentTime >= '" + selectedTimeMinusDuration + "'AND AppointmentTime <= '" + selectedTimePlusDuration + "'";
+            string sql = @"SELECT StaffID FROM Shifts WHERE Date = '" + selectedDate + "' AND StartTime <=  '" + selectedTime + "' AND FinishTime >= '"  + "' EXCEPT SELECT StaffID FROM Appointments WHERE AppointmentDate = '" + selectedDate + "'AND AppointmentTime >= '" + selectedTimeMinusDuration + "'AND AppointmentTime <= '" + selectedTimePlusDuration + "'";
 
 
             return DBManager.getDBConnectionInstance().getDataSet(sql);
         }
+
+        private DataSet LoadShiftsIdByTime(string time)
+        {
+            DataSet ds = new DataSet();
+            string sql = @"SELECT DISTINCT StaffID FROM Shifts WHERE StartTime <= '" + time + "' AND FinishTime >= '" + time + "' ";
+
+            ds = DBManager.getDBConnectionInstance().getDataSet(sql);
+            return ds;
+        }
+
+
 
 
 
@@ -598,7 +794,7 @@ namespace WindowsFormsApplication2
 
         internal DataSet InsertFull(string appointmentDate, string appointmentTime, string stffID, string patientID)
         {
-            string sql = @"INSERT INTO Appointments (AppointmentDate, AppointmentTime, StaffID, PatientID) VALUES  ( '" + appointmentDate + "', '" + appointmentTime + "', '" + stffID + "', '" + patientID + "')";
+            string sql = @"INSERT INTO Appointments (AppointmentDate, AppointmentTime, StaffID, PatientID, Duration) VALUES  ( '" + appointmentDate + "', '" + appointmentTime + "', '" + stffID + "', '" + patientID + "', 30)";
             return DBManager.getDBConnectionInstance().getDataSet(sql);
         }
 
@@ -607,6 +803,45 @@ namespace WindowsFormsApplication2
             string sql = @"SELECT * FROM Appointments WHERE ID = '" + id + "'";
             return DBManager.getDBConnectionInstance().getDataSet(sql);
         }
+
+        private DataSet LoadAppointment(Date date, string stffID)
+        {
+            string sql;
+            Time now = new Time(DateTime.Now.ToString("HH_mm"));
+
+            if (date.ToString() != DateTime.Now.ToString("yyyy_MM_dd"))
+            {
+                 sql = @"SELECT * FROM Appointments WHERE AppointmentDate = '" + date.ToString() + "' AND StaffId = '" + stffID + "'";
+            }
+            else
+            {
+                sql = @"SELECT * FROM Appointments WHERE AppointmentDate = '" + date.ToString() + "' AND StaffId = '" + stffID + "' AND AppointmentTime >= '" + (now.Minutes-30) + "'";
+
+            }
+            return DBManager.getDBConnectionInstance().getDataSet(sql);
+        }
+
+        private DataSet LoadAppointment(Date date, Time time, string stffID)
+        {
+            Time minus = time;
+            minus.Minutes = minus.Minutes - 30;
+            Time plus = time;
+            plus.Minutes = plus.Minutes + 30;
+
+            string sql;
+            sql = @"SELECT StaffID FROM Appointments WHERE AppointmentDate = '" + date.ToString() + "' AND StaffId = '" + stffID + "' AND AppointmentTime >= '" + minus.ToString() + "' AND AppointmentTime <= '" + plus.ToString() + "' INTERSECT SELECT StaffID FROM Shifts WHERE StartTime <= '" + time.ToString() + "' AND FinishTime >= '" + time.ToString() + "' AND StaffId = '" + stffID + "'";
+            
+            return DBManager.getDBConnectionInstance().getDataSet(sql);
+        }
+
+
+        private DataSet LoadAppointment(Date date)
+        {
+            string sql = @"SELECT * FROM Appointments WHERE AppointmentDate = '" + date.ToString() + "'";
+            return DBManager.getDBConnectionInstance().getDataSet(sql);
+        }
+
+
 
 
 

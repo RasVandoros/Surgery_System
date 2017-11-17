@@ -24,6 +24,18 @@ namespace WindowsFormsApplication2
             }
             set { Logger.Instance.logName = value; }
         }
+        public List<Logg> RunTimeLogs
+        {
+            get
+            {
+                return this.runtimeLogs;
+            }
+            set
+            {
+                runtimeLogs = value;
+            }
+        }
+
 
         #region Singleton
         static Logger instance = null;
@@ -71,7 +83,9 @@ namespace WindowsFormsApplication2
             }
         }
 
-        private class Logg
+
+        #region Logg Class
+        public class Logg
         {
             private string dateTime;
             private Type type;
@@ -102,6 +116,8 @@ namespace WindowsFormsApplication2
             }
 
         }
+
+        #endregion 
 
         public enum Type
         {
