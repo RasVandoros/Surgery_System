@@ -146,6 +146,7 @@
             this.shiftsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.shiftsGrid.Location = new System.Drawing.Point(392, 43);
             this.shiftsGrid.Name = "shiftsGrid";
+            this.shiftsGrid.ReadOnly = true;
             this.shiftsGrid.Size = new System.Drawing.Size(375, 338);
             this.shiftsGrid.TabIndex = 15;
             // 

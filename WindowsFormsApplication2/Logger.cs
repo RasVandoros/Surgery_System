@@ -66,16 +66,22 @@ namespace WindowsFormsApplication2
 
         #endregion
 
+        /// <summary>
+        /// Creates a log file, containing the type of log, a custom message and an id that is specific to the current runtime
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="message"></param>
+        /// <param name="id"></param>
         public void WriteLog(Type type, Message message, string id)
         {
             DateTime dt = DateTime.Now;
             string date = dt.ToString("yyyy_MM_dd");
-            string line = "";
-            line += dt.ToString("HH_mm_ss_fff");
-            line += "//";
-            line += type;
-            line += "//";
-            line += message.message;
+            string line = ""; //this line is going to be the full entry
+            line += dt.ToString("HH_mm_ss_fff");//It contains the cur date
+            line += "||";//seperated by this
+            line += type;//the Type of entry
+            line += "||";//seperated by this
+            line += message.message;//and the message passed from outside the class
 
             using (var sw = new StreamWriter(logName, true))
             {
