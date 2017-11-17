@@ -497,7 +497,7 @@ namespace WindowsFormsApplication2
                     }
                     temp.OrderBy(x => x.Time.Raw);
 
-                    for (int i = 0; i < temp.Count; i++)
+                    for (int i = 0; i <= temp.Count; i++)
                     {
 
                         if (i == 0)
@@ -514,10 +514,10 @@ namespace WindowsFormsApplication2
 
                         else if (i == temp.Count)
                         {
-                            int mydif = endLook - temp[i].Time;
+                            int mydif = endLook - temp[i - 1].Time;
                             if (mydif >= 60)//we need to fit the appointment at temp[i].Time and the new one
                             {
-                                appointmentTime = (temp[i].Time + (int)30).ToString();
+                                appointmentTime = (temp[i-1].Time + (int)30).ToString();
                                 newAppointment = new Appointment(activePatient.PatientId, stffID, appointmentDate, appointmentTime);
                                 check = true;
 
@@ -539,7 +539,8 @@ namespace WindowsFormsApplication2
                 }
                 else
                 {
-                    InsertFull(appointmentDate, startLook.ToString(), stffID, activePatient.PatientId);
+                    newAppointment = new Appointment(activePatient.PatientId, stffID, appointmentDate, startLook.ToString());
+
                     check = true;
                 }
 
@@ -551,9 +552,10 @@ namespace WindowsFormsApplication2
                 {
                     DialogResult dl = MessageBox.Show(String.Format
                         ("You have not selected a time, therefore you appointment will be booked for the first available timeslot, which is:{0}{1}.",
-                                Environment.NewLine, appointmentTime), "Attention!", MessageBoxButtons.YesNo);
+                                Environment.NewLine, newAppointment.AppointmentTime), "Attention!", MessageBoxButtons.YesNo);
                     if (dl == DialogResult.Yes)
                     {
+
 
                         InsertFull(appointmentDate, newAppointment.AppointmentTime, stffID, activePatient.PatientId);
                         MessageBox.Show("Appointment booked successfully!");

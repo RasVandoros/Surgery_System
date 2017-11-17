@@ -222,12 +222,23 @@ namespace WindowsFormsApplication2
 
         public static int operator -(Time t1, Time t2)// substracting to to Time objects returns the time difference in minutes
         {
-
+            int timeDifference = 0;
             Time t3 = new Time("00_00");
-           
-            t3.Minutes = t1.Minutes - t2.Minutes;
-            t3.Hours += t1.Hours - t2.Hours;
-            int timeDifference = t3.Hours * 60 + t3.Minutes;
+
+            if (t1.Raw > t2.Raw)
+            {
+                
+                t3.Minutes = t1.Minutes - t2.Minutes;
+                t3.Hours += t1.Hours - t2.Hours;
+                timeDifference = t3.Hours * 60 + t3.Minutes;
+            }
+            else if(t2.Raw > t1.Raw)
+            {
+                t3.Minutes = t2.Minutes - t1.Minutes;
+                t3.Hours += t2.Hours - t1.Hours;
+                timeDifference = -(t3.Hours * 60 + t3.Minutes);
+            }
+
             return timeDifference;
 
         }
