@@ -166,9 +166,10 @@
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(390, 386);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(358, 13);
+            this.label2.Size = new System.Drawing.Size(388, 13);
             this.label2.TabIndex = 17;
-            this.label2.Text = "*The table shows all the shifts that cover the data and time selections made";
+            this.label2.Text = "*The table shows all the shifts that cover the data and time of the selections ma" +
+    "de";
             // 
             // BookAppointmentForm
             // 

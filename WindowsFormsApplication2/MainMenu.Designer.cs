@@ -84,9 +84,10 @@
             // 
             // CalendarButton
             // 
-            this.CalendarButton.Location = new System.Drawing.Point(23, 65);
+            this.CalendarButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CalendarButton.Location = new System.Drawing.Point(68, 71);
             this.CalendarButton.Name = "CalendarButton";
-            this.CalendarButton.Size = new System.Drawing.Size(62, 61);
+            this.CalendarButton.Size = new System.Drawing.Size(101, 94);
             this.CalendarButton.TabIndex = 26;
             this.CalendarButton.Text = "Calendar";
             this.CalendarButton.UseVisualStyleBackColor = true;
@@ -94,9 +95,9 @@
             // 
             // findPatient
             // 
-            this.findPatient.Location = new System.Drawing.Point(345, 210);
+            this.findPatient.Location = new System.Drawing.Point(339, 192);
             this.findPatient.Name = "findPatient";
-            this.findPatient.Size = new System.Drawing.Size(84, 23);
+            this.findPatient.Size = new System.Drawing.Size(84, 41);
             this.findPatient.TabIndex = 27;
             this.findPatient.Text = "Find Patient";
             this.findPatient.UseVisualStyleBackColor = true;
@@ -132,19 +133,20 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(312, 60);
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(303, 57);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(43, 13);
+            this.label5.Size = new System.Drawing.Size(64, 17);
             this.label5.TabIndex = 28;
             this.label5.Text = "Patient:";
             // 
             // registerNewPatientButton
             // 
-            this.registerNewPatientButton.Location = new System.Drawing.Point(222, 210);
+            this.registerNewPatientButton.Location = new System.Drawing.Point(241, 192);
             this.registerNewPatientButton.Name = "registerNewPatientButton";
-            this.registerNewPatientButton.Size = new System.Drawing.Size(84, 23);
+            this.registerNewPatientButton.Size = new System.Drawing.Size(83, 41);
             this.registerNewPatientButton.TabIndex = 38;
-            this.registerNewPatientButton.Text = "Register New";
+            this.registerNewPatientButton.Text = "Register New Patient";
             this.registerNewPatientButton.UseVisualStyleBackColor = true;
             this.registerNewPatientButton.Click += new System.EventHandler(this.registerNewPatientButton_Click);
             // 
@@ -207,7 +209,7 @@
             // 
             // emptyActivePatButton
             // 
-            this.emptyActivePatButton.Location = new System.Drawing.Point(283, 55);
+            this.emptyActivePatButton.Location = new System.Drawing.Point(274, 52);
             this.emptyActivePatButton.Name = "emptyActivePatButton";
             this.emptyActivePatButton.Size = new System.Drawing.Size(23, 23);
             this.emptyActivePatButton.TabIndex = 50;
