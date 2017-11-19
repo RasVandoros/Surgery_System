@@ -100,6 +100,7 @@
     <Compile Include="BookAppointmentForm.Designer.cs">
       <DependentUpon>BookAppointmentForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Medication.cs" />
     <Compile Include="Patient.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="RegisterNewUser.Designer.cs">
       <DependentUpon>RegisterNewUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="StaffMember.cs" />
     <Compile Include="UIManager.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Utility.cs" />
