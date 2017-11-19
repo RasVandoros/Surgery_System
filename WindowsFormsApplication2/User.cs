@@ -57,7 +57,7 @@ namespace WindowsFormsApplication2
                 {
                     UIManager.Instance.MainForm.RegisterNewUserVisibility = true;
                 }
-            Logger.Instance.WriteLog(Logger.Type.Flow, new Message("User object instantiated"), UIManager.Instance.ID.ToString());
+            Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("User object instantiated")));
 
         }
 

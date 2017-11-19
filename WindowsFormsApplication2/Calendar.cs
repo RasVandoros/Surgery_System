@@ -45,7 +45,7 @@ namespace WindowsFormsApplication2
                 selectedAppointment.Text += "Patient ID: " + UIManager.Instance.ChosenAppointment.PatientID + "\n";
                 selectedAppointment.Text += "Staff Member ID: " + UIManager.Instance.ChosenAppointment.StaffID;
 
-                Logger.Instance.WriteLog(Logger.Type.Flow, new Message("Selected appointment text update to: " + selectedAppointment.Text), UIManager.Instance.ID.ToString());
+                Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("Selected appointment text update to: " + selectedAppointment.Text)));
 
             }
 
@@ -88,7 +88,7 @@ namespace WindowsFormsApplication2
                 selectedAppointment.Text += "Patient ID: " + UIManager.Instance.ChosenAppointment.PatientID + "\n";
                 selectedAppointment.Text += "Staff Member ID: " + UIManager.Instance.ChosenAppointment.StaffID;
 
-                Logger.Instance.WriteLog(Logger.Type.Flow, new Message("Selected appointment text update to: " + selectedAppointment.Text), UIManager.Instance.ID.ToString());
+                Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("Selected appointment text update to: " + selectedAppointment.Text)));
 
             }
 
@@ -101,7 +101,7 @@ namespace WindowsFormsApplication2
             myGrid.DataSource = UIManager.Instance.CalendarDataset(myCalendar.SelectionRange.Start.ToString("yyyy/MM/dd").Replace('/', '_')).Tables[0];
             selectedAppointment.Text = "None";
 
-            Logger.Instance.WriteLog(Logger.Type.Flow, new Message("Deleted selected appointment"), UIManager.Instance.ID.ToString());
+            Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("Deleted selected appointment")));
 
         }
 

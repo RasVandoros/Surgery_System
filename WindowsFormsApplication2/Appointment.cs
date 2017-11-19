@@ -81,7 +81,7 @@ namespace WindowsFormsApplication2
             time = new Time(appointmentTime);
             date = new Date(appointmentDate);
             duration = 30;
-            Logger.Instance.WriteLog(Logger.Type.Flow, new Message("Appointment object created"), UIManager.Instance.ID.ToString());
+            Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("Appointment object created")));
         }
 
         /// <summary>
@@ -105,11 +105,11 @@ namespace WindowsFormsApplication2
             }
             catch
             {
-                Logger.Instance.WriteLog(Logger.Type.Exception, new Message("Appointment date, time or duration could not be parsed"), UIManager.Instance.ID.ToString());
+                Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Exception, new Message("Appointment date, time or duration could not be parsed")));
 
             }
 
-            Logger.Instance.WriteLog(Logger.Type.Flow, new Message("Appointment object created"), UIManager.Instance.ID.ToString());
+            Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("Appointment object created")));
 
         }
 
@@ -131,7 +131,7 @@ namespace WindowsFormsApplication2
             }
             catch
             {
-                Logger.Instance.WriteLog(Logger.Type.Flow, new Message("Appointment date, time or duration could not be parsed"), UIManager.Instance.ID.ToString());
+                Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("Appointment date, time or duration could not be parsed")));
 
             }
         }

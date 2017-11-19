@@ -54,7 +54,7 @@ namespace WindowsFormsApplication2
             this.patientDateOfBirth = data.Tables[0].Rows[0][2].ToString().Trim(' ');
             this.patientAddress = data.Tables[0].Rows[0][3].ToString().Trim(' ');
 
-            Logger.Instance.WriteLog(Logger.Type.Flow, new Message("Patient ob instantiated"), UIManager.Instance.ID.ToString());
+            Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("Patient ob instantiated")));
 
         }
     }

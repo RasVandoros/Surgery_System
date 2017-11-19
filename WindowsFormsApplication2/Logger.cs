@@ -72,16 +72,17 @@ namespace WindowsFormsApplication2
         /// <param name="type"></param>
         /// <param name="message"></param>
         /// <param name="id"></param>
-        public void WriteLog(Type type, Message message, string id)
+        public void WriteLog(Logg log)
         {
-            DateTime dt = DateTime.Now;
-            string date = dt.ToString("yyyy_MM_dd");
+            
             string line = ""; //this line is going to be the full entry
-            line += dt.ToString("HH_mm_ss_fff");//It contains the cur date
+            line += log.D.ToString();//It contains the cur date
             line += "||";//seperated by this
-            line += type;//the Type of entry
+            line += log.T;//It contains the cur time
             line += "||";//seperated by this
-            line += message.message;//and the message passed from outside the class
+            line += log.Type;//the Type of entry
+            line += "||";//seperated by this
+            line += log.M.message;//and the message passed from outside the class
 
             using (var sw = new StreamWriter(logName, true))
             {
@@ -93,13 +94,15 @@ namespace WindowsFormsApplication2
         #region Logg Class
         public class Logg
         {
-            private string dateTime;
+            private string t;
             private Type type;
-            private string message;
+            private Message m;
+            private Date d;
+     
 
-            public string DateTime
+            public Date D
             {
-                get { return dateTime; }
+                get { return d; }
             }
 
             public Type Type
@@ -107,17 +110,24 @@ namespace WindowsFormsApplication2
                 get { return type; }
             }
 
-            public string Message
+            public Message M
             {
-                get { return message; }
+                get { return m; }
+            }
+
+            public string T
+            {
+                get { return t; }
             }
 
 
-            public Logg(DateTime dateTime, Type type, string message)
+            public Logg(Type type, Message message)
             {
-                this.dateTime = dateTime.ToString("hh_MM_ss_fff");
+                DateTime dt = DateTime.Now;
+                this.d= new Date(DateTime.Now.ToString("yyyy_MM_dd"));
+                this.t =DateTime.Now.ToString("HH_mm_ss_fff");
                 this.type = type;
-                this.message = message;
+                this.m = message;      
                 Logger.Instance.runtimeLogs.Add(this);
             }
 

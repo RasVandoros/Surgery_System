@@ -28,10 +28,10 @@ namespace WindowsFormsApplication2
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Logger.Instance.WriteLog(Logger.Type.Flow, new Message("Entry point"), UIManager.Instance.ID.ToString());
 
             UIManager.Instance.CallLoginScreen();
-            
+            Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("Entry point")));
+
         }
     }
 }

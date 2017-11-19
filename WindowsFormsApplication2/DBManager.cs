@@ -48,15 +48,15 @@ namespace WindowsFormsApplication2
             //open connection
             connectioToDB.Open();
 
-            Logger.Instance.WriteLog(Logger.Type.Flow, new Message("db con open."), UIManager.Instance.ID.ToString());
+            Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("db con open.")));
 
         }
 
         public void closeConnection()
         {
             connectioToDB.Close();
-            Logger.Instance.WriteLog(Logger.Type.Flow, new Message("db con closed."), UIManager.Instance.ID.ToString());
-
+            Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("db con closed.")));
+            
         }
 
         //create a data set for a certain request
@@ -76,7 +76,7 @@ namespace WindowsFormsApplication2
             
             //close connection
             closeConnection();
-            Logger.Instance.WriteLog(Logger.Type.Flow, new Message("Got dataset successfully."), UIManager.Instance.ID.ToString());
+            Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("Got dataset successfully.")));
 
             return dataSet;
         }

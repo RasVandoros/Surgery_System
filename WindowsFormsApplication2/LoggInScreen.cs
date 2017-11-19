@@ -68,12 +68,5 @@ namespace WindowsFormsApplication2
             }
         }
 
-        private void logginScreen_SizeChanged(object sender, EventArgs e)
-        {
-            foreach(Control c in this.Controls)
-            {
-
-            }
-        }
     }
 }

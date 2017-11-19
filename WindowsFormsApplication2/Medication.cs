@@ -49,7 +49,7 @@ namespace WindowsFormsApplication2
             this.notes = data.Tables[0].Rows[0][2].ToString().Trim(' ');
 
 
-            Logger.Instance.WriteLog(Logger.Type.Flow, new Message("Med object instantiated"), UIManager.Instance.ID.ToString());
+            Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("Med object instantiated")));
 
         }
     }
