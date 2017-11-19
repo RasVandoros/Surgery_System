@@ -27,10 +27,7 @@ namespace WindowsFormsApplication2
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-
             UIManager.Instance.CallLoginScreen();
-            Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("Entry point")));
 
         }
     }
