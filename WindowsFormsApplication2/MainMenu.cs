@@ -74,6 +74,7 @@ namespace WindowsFormsApplication2
 
         private void MainMenu_Load(object sender, EventArgs e)
         {
+            Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("MainMenu loaded")));
 
             this.MinimumSize = new System.Drawing.Size(this.Width, this.Height);
             // no larger than screen size
@@ -104,6 +105,8 @@ namespace WindowsFormsApplication2
         private void emptyActivePatButton_Click(object sender, EventArgs e)
         {
             UIManager.Instance.ActivePatient = null;
+            Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("Active patient ob emptied")));
+
             //UIManager.Instance.UpdatePrescriptionsDataGrid();
             //Utility.UpdateActivePatientLabels();
         }

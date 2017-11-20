@@ -163,7 +163,7 @@ namespace WindowsFormsApplication2
 
         #region Call Forms Methods
 
-        internal void ShowRegisterNewPatientForm()
+        public void ShowRegisterNewPatientForm()
         {
             registerNewPatientForm = new RegisterNewPatientForm();
             registerNewPatientForm.ShowDialog();
@@ -171,27 +171,34 @@ namespace WindowsFormsApplication2
 
         }
 
+        /// <summary>
+        /// Subscribes the Form_Closing Event to both the log ine screen and the main menu, which pop the messagebox when the user tries to close the form
+        /// Makes the login screen invisible, and requests the application to run the LogInScreen form, initiating the visuals.
+        /// </summary>
         public void CallLoginScreen()
         {
+            Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("Call Log In Screen Form.")));
             myLoggInScreen.FormClosing += Form_FormClosing;
             
             mainForm.Visible = false;
             mainForm.FormClosing += Form_FormClosing;
            
             Application.Run(myLoggInScreen);
-            Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("Call Log In Screen Form.")));
 
         }
 
-        internal void ShowRegisterNewUserForm()
+        /// <summary>
+        /// Instantiates the register new user form and shows the dialog
+        /// </summary>
+        public void ShowRegisterNewUserForm()
         {
+            Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("Call Register new user form.")));
             registerNewUserForm = new RegisterNewUser();
             registerNewUserForm.ShowDialog();
-            Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("Call Register new user form.")));
 
         }
 
-        internal void showCalendar()
+        public void showCalendar()
         {
             calendarForm = new Calendar();
             calendarForm.ShowDialog();
@@ -204,7 +211,7 @@ namespace WindowsFormsApplication2
 
         #region Update Methods
 
-        internal void UpdatePrescriptionsDataGrid()
+        public void UpdatePrescriptionsDataGrid()
         {
             if (ActivePatient != null)
             {
@@ -221,7 +228,7 @@ namespace WindowsFormsApplication2
 
         }
 
-        internal DataSet GetComboBoxDs(string selectedDate, string selectedTIme)
+        public DataSet GetComboBoxDs(string selectedDate, string selectedTIme)
         {
             BookAppointmentForm.StffComboBox.Items.Clear();
             DataSet ds;
@@ -256,7 +263,7 @@ namespace WindowsFormsApplication2
 
         }
 
-        internal void UpdateShiftsDataGrid()
+        public void UpdateShiftsDataGrid()
         {
 
             if (BookAppointmentForm.StffComboBox.SelectedItem != null)
@@ -328,7 +335,7 @@ namespace WindowsFormsApplication2
 
         }
 
-        internal void InstantiateAppointment(string appointmentID)
+        public void InstantiateAppointment(string appointmentID)
         {
 
             DataSet ds = LoadAppointment(appointmentID);
@@ -345,7 +352,7 @@ namespace WindowsFormsApplication2
             }
         }
 
-        internal void SubmitAppointmentRequest()
+        public void SubmitAppointmentRequest()
         {
             try
             {
@@ -386,7 +393,7 @@ namespace WindowsFormsApplication2
         }
 
 
-        private void OnlyTimeInsert(string stffID)
+        public void OnlyTimeInsert(string stffID)
         {
             try
             {
@@ -457,7 +464,7 @@ namespace WindowsFormsApplication2
             }
         }
 
-        private void OnlyDateInsert(string stffID)
+        public void OnlyDateInsert(string stffID)
         {
             try
             {
@@ -578,7 +585,7 @@ namespace WindowsFormsApplication2
         }
 
 
-        internal void showFindPatientForm()
+        public void showFindPatientForm()
         {
             findPatientForm = new FindPatient();
             findPatientForm.ShowDialog();
@@ -587,7 +594,7 @@ namespace WindowsFormsApplication2
 
         }
 
-        internal void ShowBookAppointmentForm()
+        public void ShowBookAppointmentForm()
         {
             bookAppointmentForm = new BookAppointmentForm();
             bookAppointmentForm.ShowDialog();
@@ -596,7 +603,7 @@ namespace WindowsFormsApplication2
 
         }
 
-        internal bool ConfirmSearchPatientClick(string name, string postcode, string dOb)
+        public bool ConfirmSearchPatientClick(string name, string postcode, string dOb)
         {
             DataSet ds = LoadPatient(name, postcode, dOb);
             if (Utility.CheckFind(ds))
@@ -608,7 +615,7 @@ namespace WindowsFormsApplication2
 
         }
 
-        internal bool ConfirmSearchPatientClick(string id)
+        public bool ConfirmSearchPatientClick(string id)
         {
             int myId;
             if (Int32.TryParse(id, out myId))
@@ -625,12 +632,18 @@ namespace WindowsFormsApplication2
 
         }
 
+        /// <summary>
+        /// Checks if the user exists in the database
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public bool ClickLogIn(string userName, string password)
         {
             DataSet ds = LoadUser(userName, password);
             if (Utility.CheckFind(ds))
             {
-                UIManager.Instance.activeUser = new User(ds);
+                UIManager.Instance.ActiveUser = new User(ds);
                 return true;
             }
             else return false;
@@ -642,7 +655,7 @@ namespace WindowsFormsApplication2
 
         #region GetDataset Methods
 
-        internal DataSet LoadPatient(string id)
+        public DataSet LoadPatient(string id)
         {
             string sql = @"SELECT * FROM Patients WHERE Id = '" + id + "'";
             Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Info, new Message("SQL= " + sql)));
@@ -651,7 +664,7 @@ namespace WindowsFormsApplication2
 
         }
 
-        internal DataSet LoadPatient(string name, string postcode, string dob)
+        public DataSet LoadPatient(string name, string postcode, string dob)
         {
             string sql = @"SELECT * FROM Patients WHERE PatientName = '" + name + "'AND Address = '" + postcode + "'AND dateOfBirth = '" + dob + "'";
             Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Info, new Message("SQL= " + sql)));
@@ -661,7 +674,7 @@ namespace WindowsFormsApplication2
 
 
 
-        internal DataSet LoadMedNameAndNotes(string medID)
+        public DataSet LoadMedNameAndNotes(string medID)
         {
             
             string sql = @"SELECT MedName, Notes  FROM Meds WHERE Id = '" + medID + "'";
@@ -671,7 +684,7 @@ namespace WindowsFormsApplication2
 
 
 
-        private DataSet LoadPrescriptions(string id)
+        public DataSet LoadPrescriptions(string id)
         {
             DataSet ds = new DataSet();
             string sql = @"SELECT * FROM PatientsMeds WHERE PatientID = '" + id + "' ";
@@ -680,7 +693,7 @@ namespace WindowsFormsApplication2
             return ds;
         }
 
-        private DataSet LoadPrescriptions()
+        public DataSet LoadPrescriptions()
         {
             DataSet ds = new DataSet();
             string sql = @"SELECT * FROM  PatientsMeds ";
@@ -705,7 +718,7 @@ namespace WindowsFormsApplication2
 
 
 
-        private DataSet LoadShifts(Time selectedTime)
+        public DataSet LoadShifts(Time selectedTime)
         {
             DataSet ds = new DataSet();
             string sql = @"SELECT * FROM Shifts WHERE StartTime <= '" + selectedTime.ToString() + "' AND FinishTime >= '" + selectedTime.ToString() + "' ";
@@ -714,7 +727,7 @@ namespace WindowsFormsApplication2
             return ds;
         }
 
-        private DataSet LoadShifts(Date selectedDate)
+        public DataSet LoadShifts(Date selectedDate)
         {
             DataSet ds = new DataSet();
             string sql = @"SELECT * FROM Shifts WHERE Date = '" + selectedDate.ToString() + "' ";
@@ -723,7 +736,7 @@ namespace WindowsFormsApplication2
             return ds;
         }
 
-        private DataSet LoadShifts(string staffID)
+        public DataSet LoadShifts(string staffID)
         {
             DataSet ds = new DataSet();
             string sql = @"SELECT * FROM Shifts WHERE StaffId = '" + staffID + "' ";
@@ -732,7 +745,7 @@ namespace WindowsFormsApplication2
             return ds;
         }
 
-        private DataSet LoadShifts(Date selectedDate, Time selectedTime)
+        public DataSet LoadShifts(Date selectedDate, Time selectedTime)
         {
             DataSet ds = new DataSet();
             string sql = @"SELECT * FROM Shifts WHERE Date = '" + selectedDate.ToString()
@@ -742,7 +755,7 @@ namespace WindowsFormsApplication2
             return ds;
         }
 
-        private DataSet LoadShifts(Time selectedTime, string staffID)
+        public DataSet LoadShifts(Time selectedTime, string staffID)
         {
             DataSet ds = new DataSet();
             string sql = @"SELECT * FROM Shifts WHERE StartTime <= '" + selectedTime.ToString() + "' AND FinishTime >= '" + selectedTime.ToString() + "' AND StaffId = '" + staffID + "' ";
@@ -751,7 +764,7 @@ namespace WindowsFormsApplication2
             return ds;
         }
 
-        private DataSet LoadShifts(Date selectedDate, string staffID)
+        public DataSet LoadShifts(Date selectedDate, string staffID)
         {
             DataSet ds = new DataSet();
             string sql = @"SELECT * FROM Shifts WHERE Date = '" + selectedDate.ToString() + "' AND StaffId = '" + staffID + "' ";
@@ -760,7 +773,7 @@ namespace WindowsFormsApplication2
             return ds;
         }
 
-        private DataSet LoadShifts(Date selectedDate, Time selectedTime, string staffID)
+        public DataSet LoadShifts(Date selectedDate, Time selectedTime, string staffID)
         {
             DataSet ds = new DataSet();
             string sql = @"SELECT * FROM Shifts WHERE Date = '" + selectedDate.ToString() +
@@ -771,7 +784,7 @@ namespace WindowsFormsApplication2
             return ds;
         }
 
-        private DataSet LoadShifts()
+        public DataSet LoadShifts()
         {
             DataSet ds = new DataSet();
             string sql = @"SELECT * FROM Shifts";
@@ -780,13 +793,13 @@ namespace WindowsFormsApplication2
 
             return ds;
         }
-           
 
 
 
 
 
-        private DataSet LoadShiftsIdDistinct ()
+
+        public DataSet LoadShiftsIdDistinct ()
         {
             string sql = @"SELECT DISTINCT StaffID FROM Shifts";
             Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Info, new Message("SQL= " + sql)));
@@ -831,7 +844,7 @@ namespace WindowsFormsApplication2
             return DBManager.getDBConnectionInstance().getDataSet(sql);
         }
 
-        private DataSet LoadShiftsIdByTime(string time)
+        public DataSet LoadShiftsIdByTime(string time)
         {
             DataSet ds = new DataSet();
             string sql = @"SELECT DISTINCT StaffID FROM Shifts WHERE StartTime <= '" + time + "' AND FinishTime >= '" + time + "' ";
@@ -844,7 +857,7 @@ namespace WindowsFormsApplication2
 
 
 
-        internal DataSet CalendarDataset(string selectedDate)
+        public DataSet CalendarDataset(string selectedDate)
         {
             string sql = @"SELECT DISTINCT a.ID, a.AppointmentTime, s.StaffMemberName, p.PatientName FROM Appointments a INNER JOIN StaffMembers s on a.StaffID = s.Id INNER JOIN Patients p on a.PatientID = p.Id WHERE a.AppointmentDate = '" + selectedDate + "'";
             DataSet ds = DBManager.getDBConnectionInstance().getDataSet(sql);
@@ -852,21 +865,21 @@ namespace WindowsFormsApplication2
             return ds;
         }
 
-        internal DataSet InsertFull(string appointmentDate, string appointmentTime, string stffID, string patientID)
+        public DataSet InsertFull(string appointmentDate, string appointmentTime, string stffID, string patientID)
         {
             string sql = @"INSERT INTO Appointments (AppointmentDate, AppointmentTime, StaffID, PatientID, Duration) VALUES  ( '" + appointmentDate + "', '" + appointmentTime + "', '" + stffID + "', '" + patientID + "', 30)";
             Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Info, new Message("SQL= " + sql)));
             return DBManager.getDBConnectionInstance().getDataSet(sql);
         }
 
-        internal DataSet LoadAppointment(string id)
+        public DataSet LoadAppointment(string id)
         {
             string sql = @"SELECT * FROM Appointments WHERE ID = '" + id + "'";
             Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Info, new Message("SQL= " + sql)));
             return DBManager.getDBConnectionInstance().getDataSet(sql);
         }
 
-        private DataSet LoadAppointment(Date date, string stffID)
+        public DataSet LoadAppointment(Date date, string stffID)
         {
             string sql;
             Time now = new Time(DateTime.Now.ToString("HH_mm"));
@@ -886,7 +899,7 @@ namespace WindowsFormsApplication2
             return DBManager.getDBConnectionInstance().getDataSet(sql);
         }
 
-        private DataSet LoadAppointment(Date date, Time time, string stffID)
+        public DataSet LoadAppointment(Date date, Time time, string stffID)
         {
             Time minus = time;
             minus.Minutes = minus.Minutes - 30;
@@ -900,7 +913,7 @@ namespace WindowsFormsApplication2
         }
 
 
-        private DataSet LoadAppointment(Date date)
+        public DataSet LoadAppointment(Date date)
         {
             string sql = @"SELECT * FROM Appointments WHERE AppointmentDate = '" + date.ToString() + "'";
             Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Info, new Message("SQL= " + sql)));
@@ -910,7 +923,13 @@ namespace WindowsFormsApplication2
 
 
 
-
+        /// <summary>
+        /// Selects all the data from the Users table in the database, where the username AND the password
+        /// is the same as the username inserted by the user.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         internal DataSet LoadUser(string username, string password)
         {
             string sql = @"SELECT * FROM Users WHERE Username = '" + username + "'AND Password = '" + password + "'";
@@ -945,8 +964,14 @@ namespace WindowsFormsApplication2
             }
 
         }
-
-        internal void RegisterUser(string username, string password, string jobTitle)
+        /// <summary>
+        /// If a user matching the input data, does not exist in the database, inserts into the Users table, the appopriate values
+        /// If the user is already registered, the appropriate messagebox is poped to the user
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <param name="jobTitle"></param>
+        public void RegisterUser(string username, string password, string jobTitle)
         {
 
             if (!ClickLogIn(username, password))
@@ -974,7 +999,7 @@ namespace WindowsFormsApplication2
             }
         }
 
-        internal void RegisterPatient(string patientName, string postcode, string dob)
+        public void RegisterPatient(string patientName, string postcode, string dob)
         {
             if (!ConfirmSearchPatientClick(patientName, postcode, dob))
             {
@@ -999,7 +1024,7 @@ namespace WindowsFormsApplication2
             }
         }
 
-        internal void ExtendPrescrption(string medID, string patientID, string extendDate)
+        public void ExtendPrescrption(string medID, string patientID, string extendDate)
         {
 
             DataSet ds = new DataSet();
@@ -1010,7 +1035,7 @@ namespace WindowsFormsApplication2
 
         }
 
-        internal void DeleteExtention(string medID, string patientId)
+        public void DeleteExtention(string medID, string patientId)
         {
             DataSet ds = new DataSet();
             string sql = @"UPDATE PatientsMeds SET ExtentionDate = NULL WHERE MedId = '" + medID + "' AND PatientID = '" + patientId + "'";
@@ -1025,7 +1050,6 @@ namespace WindowsFormsApplication2
         private void Form_FormClosing(object sender, FormClosingEventArgs e)
         {
             CloseCancel(e);
-            Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("Form Was closed")));
 
         }
 
@@ -1036,14 +1060,16 @@ namespace WindowsFormsApplication2
             var result = MessageBox.Show(message, caption,
                              MessageBoxButtons.YesNo,
                              MessageBoxIcon.Question);
-
+            Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("Log off request.")));
             if (result == DialogResult.Yes)
             {
                 Utility.SwapVisibility();
-                activeUser = null;
+                ActiveUser = null;
                 ActivePatient = null;
-                chosenAppointment = null;                
-                
+                chosenAppointment = null;
+                Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("Log off confirmed.")));
+
+
             }
         }
 
@@ -1059,11 +1085,14 @@ namespace WindowsFormsApplication2
             if (result == DialogResult.No)
             {
                 e.Cancel = true;
+                Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("Cancelled close.")));
+
             }
             else
             {
                 myLoggInScreen.FormClosing -= Form_FormClosing;
                 mainForm.FormClosing -= Form_FormClosing;
+                Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("Form Was closed")));
                 Application.Exit();
             }
         }

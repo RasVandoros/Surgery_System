@@ -22,6 +22,8 @@ namespace WindowsFormsApplication2
 
         public void LoggInScreen_Load(object sender, EventArgs e)
         {
+            Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("LogIn Screen loaded")));
+
             this.MinimumSize = new System.Drawing.Size(this.Width, this.Height);
 
             // no larger than screen size
@@ -44,7 +46,8 @@ namespace WindowsFormsApplication2
                 Utility.SwapVisibility();
                 passwordTxtBox.Text = "";
                 invalidTextBox.Visible = false;
-                
+                Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("Confirmed Login request")));
+
                 //UIManager.Instance.UpdatePrescriptionsDataGrid();
                 //Utility.UpdateActivePatientLabels();
             }

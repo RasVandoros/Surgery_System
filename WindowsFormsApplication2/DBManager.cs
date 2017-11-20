@@ -51,7 +51,7 @@ namespace WindowsFormsApplication2
             Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("db con open.")));
 
         }
-
+        //Closes the conection
         public void closeConnection()
         {
             connectioToDB.Close();

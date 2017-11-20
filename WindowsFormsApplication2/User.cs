@@ -40,6 +40,8 @@ namespace WindowsFormsApplication2
 
         public User(DataSet data)
         {
+            Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("User object created")));
+
             this.password = data.Tables[0].Rows[0][2].ToString().Trim(' ');
             this.username = data.Tables[0].Rows[0][1].ToString().Trim(' ');
             Dictionary<string, Job> dictionary = new Dictionary<string, Job>();
