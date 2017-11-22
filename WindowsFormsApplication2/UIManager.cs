@@ -378,9 +378,11 @@ namespace WindowsFormsApplication2
                         OnlyDateInsert(stffID);
                     }
                 }
-                else//only time
+                else
                 {
-                    OnlyTimeInsert(stffID);
+                    
+                        OnlyTimeInsert(stffID);
+
                 }
                 Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("Appoinment Requesting method finished")));
 
@@ -391,6 +393,8 @@ namespace WindowsFormsApplication2
 
             }
         }
+
+
 
 
         public void OnlyTimeInsert(string stffID)
@@ -412,7 +416,7 @@ namespace WindowsFormsApplication2
 
                 do
                 {
-
+                    counter++;
                     ds = LoadAppointment(appointmentDate, appointmentTime, stffID);
                     if (ds.Tables[0].Rows.Count > 0)
                     {
@@ -421,15 +425,19 @@ namespace WindowsFormsApplication2
                     else
                     {
 
-                        counter = 15;
-                        found = true;
+                        if(Utility.CheckFind(LoadShiftsByDateTimeID(appointmentDate, appointmentTime, stffID)))
+                        {
+                            counter = 15;
+                            found = true;
+                        }
+                       
                     }
 
                 }
                 while (counter < 15);
                 if (found == false)
                 {
-                    MessageBox.Show("Chosen day is completelly booked");
+                    MessageBox.Show("Chosen time is completelly booked over the next 2 weeks");
                 }
                 else
                 {
@@ -603,6 +611,13 @@ namespace WindowsFormsApplication2
 
         }
 
+        /// <summary>
+        /// Looks for a patient matching the parameters, returns true if it finds one, false if it finds 0 or many,
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="postcode"></param>
+        /// <param name="dOb"></param>
+        /// <returns></returns>
         public bool ConfirmSearchPatientClick(string name, string postcode, string dOb)
         {
             DataSet ds = LoadPatient(name, postcode, dOb);
@@ -838,7 +853,8 @@ namespace WindowsFormsApplication2
             t.Minutes -= 58;
             string selectedTimeMinusDuration = t.ToString();
 
-            string sql = @"SELECT StaffID FROM Shifts WHERE Date = '" + selectedDate + "' AND StartTime <=  '" + selectedTime + "' AND FinishTime >= '"  + "' EXCEPT SELECT StaffID FROM Appointments WHERE AppointmentDate = '" + selectedDate + "'AND AppointmentTime >= '" + selectedTimeMinusDuration + "'AND AppointmentTime <= '" + selectedTimePlusDuration + "'";
+            string sql = @"SELECT StaffID FROM Shifts WHERE Date = '" + selectedDate + "' AND StartTime <=  '" + selectedTime + "' AND FinishTime >= '" 
+                 + selectedTimePlusDuration + "' EXCEPT SELECT StaffID FROM Appointments WHERE AppointmentDate = '" + selectedDate + "'AND AppointmentTime >= '" + selectedTimeMinusDuration + "'AND AppointmentTime <= '" + selectedTimePlusDuration + "'";
             Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Info, new Message("SQL= " + sql)));
 
             return DBManager.getDBConnectionInstance().getDataSet(sql);
@@ -853,13 +869,36 @@ namespace WindowsFormsApplication2
             return ds;
         }
 
+        public DataSet LoadShiftsByDateTimeID(Date selectedDate, Time selectedTime, string ID)
+        {
+            Time t = selectedTime; //TO DO: Read the duration of each appointment from the file to allow non constant durations
+            t.Minutes += 29;
+            string selectedTimePlusDuration = t.ToString();
+            DataSet ds=  new DataSet();
 
+            try
+            {
+                string sql = @"SELECT StaffID FROM Shifts WHERE Date = '" + selectedDate.ToString() + "' AND StartTime <=  '" + selectedTime.ToString() + "' AND FinishTime >= '"
+                 + selectedTimePlusDuration + "' AND ID = '" + ID + "'";
+                Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Info, new Message("SQL= " + sql)));
+                ds = DBManager.getDBConnectionInstance().getDataSet(sql);
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+
+
+            return ds;
+        }
 
 
 
         public DataSet CalendarDataset(string selectedDate)
         {
-            string sql = @"SELECT DISTINCT a.ID, a.AppointmentTime, s.StaffMemberName, p.PatientName FROM Appointments a INNER JOIN StaffMembers s on a.StaffID = s.Id INNER JOIN Patients p on a.PatientID = p.Id WHERE a.AppointmentDate = '" + selectedDate + "'";
+            string sql = @"SELECT DISTINCT a.ID, a.AppointmentTime, s.StaffMemberName, p.PatientName 
+            FROM Appointments a INNER JOIN StaffMembers s on a.StaffID = s.Id INNER JOIN Patients p on a.PatientID = p.Id 
+            WHERE a.AppointmentDate = '" + selectedDate + "'";
             DataSet ds = DBManager.getDBConnectionInstance().getDataSet(sql);
             Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Info, new Message("SQL= " + sql)));
             return ds;
@@ -905,11 +944,19 @@ namespace WindowsFormsApplication2
             minus.Minutes = minus.Minutes - 30;
             Time plus = time;
             plus.Minutes = plus.Minutes + 30;
-
+            DataSet ds = new DataSet();
             string sql;
-            sql = @"SELECT StaffID FROM Appointments WHERE AppointmentDate = '" + date.ToString() + "' AND StaffId = '" + stffID + "' AND AppointmentTime >= '" + minus.ToString() + "' AND AppointmentTime <= '" + plus.ToString() + "' INTERSECT SELECT StaffID FROM Shifts WHERE StartTime <= '" + time.ToString() + "' AND FinishTime >= '" + time.ToString() + "' AND StaffId = '" + stffID + "'";
+            sql = @"SELECT StaffID FROM Appointments WHERE AppointmentDate = '" + date.ToString() + "' AND StaffId = '" + stffID + "' AND AppointmentTime >= '" + minus.ToString() + "' AND AppointmentTime <= '" + plus.ToString() + "' INTERSECT SELECT StaffID FROM Shifts WHERE StartTime <= '" + time.ToString() + "' AND FinishTime >= '" + time.ToString() + "' AND StaffId = '" + stffID + "' AND Date = '" + date.ToString() + "'";
             Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Info, new Message("SQL= " + sql)));
-            return DBManager.getDBConnectionInstance().getDataSet(sql);
+            try
+            {
+                ds = DBManager.getDBConnectionInstance().getDataSet(sql);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+            return ds;
         }
 
 
@@ -920,7 +967,7 @@ namespace WindowsFormsApplication2
             return DBManager.getDBConnectionInstance().getDataSet(sql);
         }
 
-
+        
 
 
         /// <summary>

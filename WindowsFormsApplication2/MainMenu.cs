@@ -120,22 +120,43 @@ namespace WindowsFormsApplication2
             UIManager.Instance.showCalendar();
         }
 
+        /// <summary>
+        /// Event triggering when the find patient button is clicked, loading the appropriate form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <summary>
         private void findPatient_Click(object sender, EventArgs e)
         {
             UIManager.Instance.showFindPatientForm();
 
         }
 
+        /// <summary>
+        /// Event triggering when register new patient button is clicked showing the appropriate form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void registerNewPatientButton_Click(object sender, EventArgs e)
         {
             UIManager.Instance.ShowRegisterNewPatientForm();
         }
 
+        /// <summary>
+        /// Event triggering when register new user button is clicked showing the appropriate form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void registerNewUserButton_Click(object sender, EventArgs e)
         {
             UIManager.Instance.ShowRegisterNewUserForm();
         }
 
+        /// <summary>
+        /// Event on prescription double click that cheks what part of it was double clicked and acts accordingly
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnPrescriptionGridDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             
@@ -144,7 +165,7 @@ namespace WindowsFormsApplication2
             int col = e.ColumnIndex;
             if (row >= 0)
             {
-                if (col == 0)
+                if (col == 0)//if a med id is being clicked
                 {
                     
                     string selectedMedID = prescriptions.Rows[row].Cells[col].Value.ToString();
@@ -154,7 +175,7 @@ namespace WindowsFormsApplication2
                     System.Windows.Forms.MessageBox.Show(string.Format(message, Environment.NewLine), "Medication Information");
 
                 }
-                else if (col == 1)
+                else if (col == 1)//if a patient id is clicked
                 {
                     string selectedPatId = prescriptions.Rows[row].Cells[col].Value.ToString();
                     DataSet ds = UIManager.Instance.LoadPatient(selectedPatId);
@@ -166,7 +187,13 @@ namespace WindowsFormsApplication2
 
             }
         }
-
+        /// <summary>
+        /// This event controls the extentions of prescriptions by 
+        /// catching all the changes in the values, foul proofing them
+        /// and accepting them or rejecting them
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnPrescriptionsCellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
 
@@ -195,6 +222,7 @@ namespace WindowsFormsApplication2
                     {
                         Utility.ConfirmPrescriptionAction(medID, patientId, extendDate);
                         BeginInvoke(new MethodInvoker(UIManager.Instance.UpdatePrescriptionsDataGrid));
+                        //UpdatePrescription is being Invoked
                     }
                     else
                     {

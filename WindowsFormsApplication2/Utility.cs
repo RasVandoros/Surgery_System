@@ -356,7 +356,10 @@ namespace WindowsFormsApplication2
         {
             if (UIManager.Instance.ActivePatient != null)
             {
-                UIManager.Instance.BookAppointmentForm.SubmitButton.Enabled = true;// by checking if a patient is selected. 
+                if (UIManager.Instance.BookAppointmentForm.DatePicker.Checked || UIManager.Instance.BookAppointmentForm.TimePicker.Checked)
+                {
+                    UIManager.Instance.BookAppointmentForm.SubmitButton.Enabled = true;// by checking if a patient is selected. 
+                }
 
             }
         }

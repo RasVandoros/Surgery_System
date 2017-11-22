@@ -109,7 +109,11 @@ namespace WindowsFormsApplication2
             }
             if (StffComboBox.SelectedItem != null)
             {
-                submitButton.Enabled = true;
+                if (DatePicker.Checked || TimePicker.Checked)
+                {
+                    submitButton.Enabled = true;
+                }
+
             }
             Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("Find Patient button click")));
 
