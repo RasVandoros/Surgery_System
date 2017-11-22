@@ -84,7 +84,7 @@ namespace WindowsFormsApplication2
             line += "||";//seperated by this
             line += log.M.message;//and the message passed from outside the class
 
-            using (var sw = new StreamWriter(logName, true))
+            using (var sw = new StreamWriter(LogName, true))
             {
                 sw.WriteLine(line);
             }

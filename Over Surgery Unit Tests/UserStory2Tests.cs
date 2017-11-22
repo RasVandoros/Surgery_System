@@ -32,14 +32,11 @@ namespace Over_Surgery_Unit_Tests
             bool actual1 = UIManager.Instance.ConfirmSearchPatientClick(name, postcode, dob); //look for him
             Patient p = new Patient( UIManager.Instance.LoadPatient(name, postcode, dob)); //create the patient to get the patient id 
             bool actual2 = UIManager.Instance.ConfirmSearchPatientClick(p.PatientId); // for him with the overload using the id
-            bool actual = false;
-            if(actual1 && actual2) // actual is only true if both the other two searches are true
-            {
-                actual = true;
-            }
-
+            
             //assert
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, actual1);
+            Assert.AreEqual(expected, actual2);
+
         }
 
         /// <summary>

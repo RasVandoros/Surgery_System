@@ -73,6 +73,7 @@ namespace WindowsFormsApplication2
         private FindPatient findPatientForm;
         private RegisterNewPatientForm registerNewPatientForm;
         private RegisterNewUser registerNewUserForm;
+        private Appointment newAppointment; //created for testing purposes
 
         #endregion
 
@@ -157,6 +158,12 @@ namespace WindowsFormsApplication2
 
             }
 
+        }
+
+        public Appointment NewAppointment
+        {
+            get { return newAppointment; }
+            set { newAppointment = value; }
         }
 
         #endregion
@@ -375,13 +382,14 @@ namespace WindowsFormsApplication2
                     }
                     else//only date
                     {
-                        OnlyDateInsert(stffID);
+                        string appointmentDate1 = BookAppointmentForm.DatePicker.Value.ToString("yyyy_MM_dd");
+                        OnlyDateInsert(stffID, appointmentDate1);
                     }
                 }
                 else
                 {
-                    
-                        OnlyTimeInsert(stffID);
+                    Time appointmentTime1 = new Time(BookAppointmentForm.TimePicker.Value.ToString("HH_mm"));
+                    OnlyTimeInsert(stffID, appointmentTime1, new Date(DateTime.Now.ToString("yyyy_MM_dd")));
 
                 }
                 Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Flow, new Message("Appoinment Requesting method finished")));
@@ -397,17 +405,15 @@ namespace WindowsFormsApplication2
 
 
 
-        public void OnlyTimeInsert(string stffID)
+        public void OnlyTimeInsert(string stffID, Time appointmentTime, Date appointmentDate)
         {
             try
             {
 
-
-                Date appointmentDate = new Date(DateTime.Now.ToString("yyyy_MM_dd"));
-                Time appointmentTime = new Time(BookAppointmentForm.TimePicker.Value.ToString("HH_mm"));
+                
                 int counter = 0;
                 bool found = false;
-                Appointment newAppointment = null;
+                newAppointment = null;
                 List<Appointment> temp = new List<Appointment>();
                 DataSet ds = new DataSet();
 
@@ -430,7 +436,11 @@ namespace WindowsFormsApplication2
                             counter = 15;
                             found = true;
                         }
-                       
+                        else
+                        {
+                            appointmentDate.Day = appointmentDate.Day + 1;
+                        }
+
                     }
 
                 }
@@ -450,6 +460,7 @@ namespace WindowsFormsApplication2
                         {
                             InsertFull(appointmentDate.ToString(), appointmentTime.ToString(), stffID, activePatient.PatientId);
                             MessageBox.Show("Appointment booked successfully!");
+                            NewAppointment = new Appointment(ActivePatient.PatientId, stffID, appointmentDate.ToString(), appointmentTime.ToString());
                             Form.ActiveForm.Close();
 
                         }
@@ -472,16 +483,14 @@ namespace WindowsFormsApplication2
             }
         }
 
-        public void OnlyDateInsert(string stffID)
+        public void OnlyDateInsert(string stffID, string appointmentDate)
         {
             try
             {
 
 
-                string appointmentDate = BookAppointmentForm.DatePicker.Value.ToString("yyyy_MM_dd");
                 string appointmentTime = "";
-
-                Appointment newAppointment = null;
+                NewAppointment = null;
                 bool check = false;
                 List<Appointment> temp = new List<Appointment>();
                 Date reqDate = new Date(appointmentDate);
@@ -521,7 +530,7 @@ namespace WindowsFormsApplication2
                             if (mydif >= 30)//we just need to fit the new appointment
                             {
                                 appointmentTime = startLook.ToString();
-                                newAppointment = new Appointment(activePatient.PatientId, stffID, appointmentDate, appointmentTime);
+                                NewAppointment = new Appointment(activePatient.PatientId, stffID, appointmentDate, appointmentTime);
                                 check = true;
                                 i = temp.Count;
                             }
@@ -533,7 +542,7 @@ namespace WindowsFormsApplication2
                             if (mydif >= 60)//we need to fit the appointment at temp[i].Time and the new one
                             {
                                 appointmentTime = (temp[i-1].Time + (int)30).ToString();
-                                newAppointment = new Appointment(activePatient.PatientId, stffID, appointmentDate, appointmentTime);
+                                NewAppointment = new Appointment(activePatient.PatientId, stffID, appointmentDate, appointmentTime);
                                 check = true;
 
                             }
@@ -545,7 +554,7 @@ namespace WindowsFormsApplication2
                             if (dif >= 60)//30+30 in to fit both the new appointment and the one that has a start time at at tem[i].Time
                             {
                                 appointmentTime = (temp[i - 1].Time + (int)30).ToString();
-                                newAppointment = new Appointment(activePatient.PatientId, stffID, appointmentDate, appointmentTime);
+                                NewAppointment = new Appointment(activePatient.PatientId, stffID, appointmentDate, appointmentTime);
                                 check = true;
                                 i = temp.Count;
                             }
@@ -554,7 +563,7 @@ namespace WindowsFormsApplication2
                 }
                 else
                 {
-                    newAppointment = new Appointment(activePatient.PatientId, stffID, appointmentDate, startLook.ToString());
+                    NewAppointment = new Appointment(activePatient.PatientId, stffID, appointmentDate, startLook.ToString());
 
                     check = true;
                 }
@@ -567,12 +576,12 @@ namespace WindowsFormsApplication2
                 {
                     DialogResult dl = MessageBox.Show(String.Format
                         ("You have not selected a time, therefore you appointment will be booked for the first available timeslot, which is:{0}{1}.",
-                                Environment.NewLine, newAppointment.AppointmentTime), "Attention!", MessageBoxButtons.YesNo);
+                                Environment.NewLine, NewAppointment.AppointmentTime), "Attention!", MessageBoxButtons.YesNo);
                     if (dl == DialogResult.Yes)
                     {
 
 
-                        InsertFull(appointmentDate, newAppointment.AppointmentTime, stffID, activePatient.PatientId);
+                        InsertFull(appointmentDate, NewAppointment.AppointmentTime, stffID, activePatient.PatientId);
                         MessageBox.Show("Appointment booked successfully!");
                         Form.ActiveForm.Close();
 
@@ -879,7 +888,7 @@ namespace WindowsFormsApplication2
             try
             {
                 string sql = @"SELECT StaffID FROM Shifts WHERE Date = '" + selectedDate.ToString() + "' AND StartTime <=  '" + selectedTime.ToString() + "' AND FinishTime >= '"
-                 + selectedTimePlusDuration + "' AND ID = '" + ID + "'";
+                 + selectedTimePlusDuration + "' AND StaffID = '" + ID + "'";
                 Logger.Instance.WriteLog(new Logger.Logg(Logger.Type.Info, new Message("SQL= " + sql)));
                 ds = DBManager.getDBConnectionInstance().getDataSet(sql);
             }
