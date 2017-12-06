@@ -153,7 +153,7 @@ namespace WindowsFormsApplication2
         }
 
         /// <summary>
-        /// Event on prescription double click that cheks what part of it was double clicked and acts accordingly
+        /// Event on prescription double click that checks what part of it was double clicked and acts accordingly
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
