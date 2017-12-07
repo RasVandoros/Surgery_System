@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -32,7 +33,8 @@ namespace WindowsFormsApplication2
 
             if (!String.IsNullOrEmpty(usernametextBox.Text) && !String.IsNullOrEmpty(passwordTxt.Text))
             {
-                if (!usernametextBox.Text.All(Char.IsSymbol))
+                Regex re = new Regex("^[-'a-zA-Z]*$");//used to to define if the inputed string contains special characters
+                if (re.IsMatch(usernametextBox.Text))
                 {
                     UIManager.Instance.RegisterUser(usernametextBox.Text, passwordTxt.Text, jobComboBox.Text);
                 }
